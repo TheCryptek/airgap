@@ -13,6 +13,7 @@ apt install -y \
 	haveged \
 	gnupg \
 	git \
+	expect \
 	python \
 	python-setuptools \
 	python-prettytable \
