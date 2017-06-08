@@ -43,6 +43,8 @@ qemu-system-x86_64 \
 
 ## Notes ##
 
+  Things are still pretty early right now. Please report issues.
+
   Use at your own risk. You may be eaten by a grue.
 
   Questions/Comments?
