@@ -61,4 +61,4 @@ qemu-system-x86_64 \
   [YouTube](http://youtube.com/lrvick) |
   [Last.fm](http://last.fm/user/lrvick) |
   [LinkedIn](http://linkedin.com/in/lrvick) |
-  [Github](http://github.com/lrvick/)```
+  [Github](http://github.com/lrvick/)
