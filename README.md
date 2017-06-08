@@ -12,7 +12,7 @@ internet.
 
 ## Use Cases ##
 - Generate GPG keychain
-- Store/Restore gpg keychain to Security Token such as a Yubikey
+- Store/Restore gpg keychain to security token such as a Yubikey or Nitrokey
 - Signing cryptocurrency transactions
 - Generate/backup BIP39 universal cryptocurrency wallet seed
 - Store/Restore BIP39 seed to a hardware wallet such as a Trezor or Ledger
