@@ -1,0 +1,5 @@
+#!/usr/bin/env python
+from mnemonic import Mnemonic
+
+if __name__ == "__main__":
+    print(Mnemonic('english').generate(256))
