@@ -9,15 +9,30 @@ die() {
 
 apt update
 apt install -y \
+	sudo \
 	qrencode \
 	haveged \
-	gnupg \
+	gnupg2 \
 	git \
 	expect \
 	python \
 	python-setuptools \
 	python-prettytable \
 	python-blessings
+
+# Create 'airgap' user
+useradd -m 'airgap' -G sudo -s /bin/bash
+sudo passwd --delete airgap
+echo "airgap ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+# Automatically log in to 'airgap' user on boot
+sudo mkdir -pv /etc/systemd/system/getty@tty1.service.d
+cat <<-EOF > /etc/systemd/system/getty@tty1.service.d/autologin.conf
+	[Service]
+	ExecStart=
+	ExecStart=-/sbin/agetty --autologin airgap --noclear %I 38400 linux
+EOF
+sudo systemctl enable getty@tty1.service
 
 # Install verified python-mnemonic library
 gpg --keyserver pgp.mit.edu --recv-key 91F3B339B9A02A3D
