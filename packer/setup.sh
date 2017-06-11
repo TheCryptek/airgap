@@ -17,6 +17,7 @@ apt install -y \
 	sudo \
 	qrencode \
 	haveged \
+	gnupg \
 	gnupg2 \
 	dirmngr \
 	git \
@@ -26,6 +27,8 @@ apt install -y \
 	yubikey-ksm \
 	yubikey-personalization \
 	yubico-piv-tool \
+	yhsm-tools \
+	ykneomgr \
 	u2f-host \
 	pass \
 	pwman3 \
@@ -49,7 +52,6 @@ apt install -y \
 	john \
 	crack \
 	crack-common \
-	crack-md5 \
 	nodejs \
 	duplicity \
 	python-pyrex \
@@ -78,7 +80,7 @@ apt install -y \
 	strace \
 	gdb \
 	rkhunter \
-	chrootkit \
+	chkrootkit \
 	unhide \
 	mac-robber \
 	ssl-cert \
@@ -94,7 +96,42 @@ apt install -y \
 	nasty \
 	cpm \
 	debsigs \
-	pius
+	pius \
+	libnfc-bin \
+	libnfc-dev \
+	libnfc5 \
+	neard \
+	cardpeek \
+	cardpeek-data \
+	rfdump \
+	libccid \
+	libchipcard-tools \
+	libchipcard-data \
+	libpcsclite1 \
+	pcsc-tools \
+	pcscd \
+	python-pyscard \
+	keyringer \
+	keyutils \
+	vim \
+	paperkey \
+	nano \
+	emacs \
+	seccure \
+	console-setup \
+	zfsnap \
+	zfs-fuse \
+	parted \
+	hwinfo \
+	lvm2 \
+	glances \
+	htop \
+	x509-util \
+	keyanalyze \
+	kleopatra \
+	pgpdump \
+	donkey
+
 
 
 # Create 'airgap' user
