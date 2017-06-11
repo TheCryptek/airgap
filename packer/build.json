@@ -47,7 +47,13 @@
       "type": "file",
       "source": "scripts/",
       "destination": "/usr/local/bin/"
+    },
+    {
+      "type": "file",
+      "source": "packer/etc/",
+      "destination": "/etc/"
     }
+
   ],
   "post-processors": [[
     {

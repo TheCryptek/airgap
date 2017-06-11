@@ -28,7 +28,30 @@ apt install -y \
 	yubico-piv-tool \
 	u2f-host \
 	pass \
+	pwman3 \
+	hashalot \
+	ssdeep \
+	hash-slinger \
+	passwordmaker-cli \
+	apg \
+	libpwquality-tools \
+	scrypt \
+	fcrackzip \
+	pdfcrack \
+	otpw-bin \
+	yapet \
+	samdump2 \
+	lcrack \
+	rarcrack \
+	ophcrack-cli \
+	chntpw \
+	kpcli \
+	john \
+	crack \
+	crack-common \
+	crack-md5 \
 	nodejs \
+	duplicity \
 	python-pyrex \
 	cython \
 	cython3 \
@@ -40,7 +63,39 @@ apt install -y \
 	python-setuptools \
 	python3-setuptools \
 	python-trezor \
-	python-mnemonic
+	python-mnemonic \
+	python-electrum \
+	electrum \
+	v86d \
+	rsync \
+	tmux \
+	gpm \
+	ncdu \
+	binwalk \
+	bzip2 \
+	p7zip \
+	hydra \
+	strace \
+	gdb \
+	rkhunter \
+	chrootkit \
+	unhide \
+	mac-robber \
+	ssl-cert \
+	openssl \
+	gnutls-bin \
+	monkeysphere \
+	pgpgpg \
+	signing-party \
+	gpgv \
+	gpgv2 \
+	twine \
+	guncat \
+	nasty \
+	cpm \
+	debsigs \
+	pius
+
 
 # Create 'airgap' user
 useradd -m 'airgap' -G sudo -s /bin/bash
@@ -57,19 +112,11 @@ cat <<-EOF > /etc/systemd/system/getty@tty1.service.d/autologin.conf
 	ExecStart=-/sbin/agetty --autologin airgap --noclear %I 38400 linux
 EOF
 sudo systemctl enable getty@tty1.service
+sudo systemctl enable haveged.service
 
 # Include trusted GPG keys
 gpg --keyserver pgp.mit.edu --recv-key 91F3B339B9A02A3D
 echo "trusted-key 91F3B339B9A02A3D" >> ~/.gnupg/gpg.conf
-
-## python-mnemonic
-#git clone https://github.com/trezor/python-mnemonic.git /tmp/python-mnemonic
-#cd /tmp/python-mnemonic
-#git verify-commit 094c4f4939dc6b5097575b787332f73d47759043 || {
-#	die "Verification of python-mnemonic commit failed";
-#}
-#git checkout 094c4f4939dc6b5097575b787332f73d47759043
-#python setup.py install
 
 # bip32-utils
 git clone https://github.com/prusnak/bip32utils.git /tmp/bip32utils
@@ -79,14 +126,6 @@ cd /tmp/bip32utils
 }
 git checkout dd9c541767a2a8ff60c7868c9f4b03277fabb8ba
 python setup.py install
-
-#git clone https://github.com/trezor/python-trezor.git /tmp/python-trezor
-#cd /tmp/python-trezor
-#git verify-commit e39021d7fd4f4bf830f8520e85da1a316e5a99bf || {
-#	die "Verification of python-trezor commit failed";
-#}
-#git checkout e39021d7fd4f4bf830f8520e85da1a316e5a99bf
-#python setup.py install
 
 # pycoin
 git clone https://github.com/richardkiss/pycoin.git /tmp/pycoin
