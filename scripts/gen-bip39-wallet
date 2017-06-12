@@ -4,9 +4,20 @@ from binascii import hexlify
 from pycoin.key.BIP32Node import BIP32Node
 from pycoin.key.key_from_text import key_from_text
 from pycoin.networks.all import BUILT_IN_NETWORKS
+from pycoin.encoding import to_bytes_32
+from rlp.utils import decode_hex
+from Crypto.Hash import keccak
 import json
+import bitcoin
+
+def sha3(seed):
+    sha3_256 = lambda x: keccak.new(digest_bits=256, data=x)
+    return sha3_256(seed).digest()
 
 def gen_wallet(mnemonic=None, passphrase=""):
+    networks = [ 'ETH','XRP' ]
+    for network in BUILT_IN_NETWORKS:
+        networks.append(network.code)
     if not mnemonic:
         mnemonic = Mnemonic('english').generate(256)
     seed = Mnemonic.to_seed(mnemonic, passphrase = passphrase)
@@ -16,11 +27,38 @@ def gen_wallet(mnemonic=None, passphrase=""):
         'seed': str(hexlify(seed),'utf-8'),
         'networks': {}
     }
-    for network in BUILT_IN_NETWORKS:
-        node = BIP32Node.from_master_secret(seed, network.code)
-        bip44_account = node.subkey_for_path(r"44'/0'/0'")
-        bip32_account = node.subkey_for_path(r"44'/0'/0'/0")
-        data['networks'][network.code] = {
+    for network in networks:
+        addresses = []
+        if network is 'ETH':
+            node = BIP32Node.from_master_secret(seed)
+            bip44_account = node.subkey_for_path(r"44'/60'/0'")
+            bip32_account = node.subkey_for_path(r"44'/60'/0'/0")
+            for i in range(5):
+                address = bip32_account.subkey(i)
+                private_key = to_bytes_32(address.secret_exponent())
+                addresses.append({
+                    'address': "0x%s" % str(hexlify(
+                        sha3(address.sec(True)[1:])[12:]
+                    ),'utf-8').upper(),
+                    "private_key": str(hexlify(private_key),'utf-8'),
+                    "public_key": address.sec_as_hex(),
+                })
+        elif network is 'XRP':
+            node = BIP32Node.from_master_secret(seed)
+            bip44_account = node.subkey_for_path(r"44'/144'/0'")
+            bip32_account = node.subkey_for_path(r"44'/144'/0'/0")
+        else:
+            node = BIP32Node.from_master_secret(seed, network)
+            bip44_account = node.subkey_for_path(r"44'/0'/0'")
+            bip32_account = node.subkey_for_path(r"44'/0'/0'/0")
+            for i in range(5):
+                address = bip32_account.subkey(i)
+                addresses.append({
+                    'address': address.bitcoin_address(),
+                    "private_key": address.wif(),
+                    "public_key": address.sec_as_hex(),
+                })
+        data['networks'][network] = {
             "root_key": str(node.hwif(as_private=True)),
             "extended_public_key":
                 bip32_account.wallet_key(as_private=False),
@@ -30,15 +68,8 @@ def gen_wallet(mnemonic=None, passphrase=""):
                 bip44_account.wallet_key(as_private=False),
             "account_extended_private_key":
                 bip44_account.wallet_key(as_private=True),
-            "addresses": []
+            "addresses": addresses
         }
-        for i in range(5):
-            address = bip32_account.subkey(i)
-            data['networks'][network.code]['addresses'].append({
-                'address': address.bitcoin_address(),
-                "private_key": address.wif(),
-                "public_key": address.sec_as_hex(),
-            })
 
     return data
 
