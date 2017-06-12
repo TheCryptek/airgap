@@ -8,7 +8,6 @@ from pycoin.encoding import to_bytes_32
 from rlp.utils import decode_hex
 from Crypto.Hash import keccak
 import json
-import bitcoin
 
 def sha3(seed):
     sha3_256 = lambda x: keccak.new(digest_bits=256, data=x)
