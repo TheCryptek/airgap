@@ -24,6 +24,7 @@ networks = [
     { 'code':'BTCD', 'name':'BitcoinDark','slip44':52 },
     { 'code':'ETH', 'name':'Ethereum','slip44':60 },
     { 'code':'XRP', 'name':'Ripple','slip44':144 },
+    { 'code':'LBC', 'name':'LBRY Credits','slip44':140 },
 ]
 
 def sha3(seed):
@@ -60,7 +61,7 @@ def gen_wallet(mnemonic=None, passphrase=""):
                     "private_key": str(hexlify(private_key),'utf-8'),
                     "public_key": address.sec_as_hex(),
                 })
-        elif network['code'] is 'XRP':
+        elif network['code'] is 'XRP' or 'LBC':
             node = BIP32Node.from_master_secret(seed)
             bip44_node = node.subkey(44,True)
             bip44_account = \
