@@ -32,10 +32,12 @@ def sha3(seed):
 
 def gen_wallet(mnemonic=None, passphrase=""):
     if not mnemonic:
-        mnemonic = Mnemonic('english').generate(256)
-    seed = Mnemonic.to_seed(mnemonic, passphrase = passphrase)
+        mnemonic = Mnemonic('english')
+        words = mnemonic.generate(256)
+    if mnemonic.to_entropy(words):
+        seed = mnemonic.to_seed(words)
     data = {
-        'mnemonic': str(mnemonic),
+        'mnemonic': str(words),
         'passphrase': str(passphrase),
         'seed': str(hexlify(seed),'utf-8'),
         'networks': {}
@@ -64,6 +66,13 @@ def gen_wallet(mnemonic=None, passphrase=""):
             bip44_account = \
                 bip44_node.subkey(network['slip44'],True).subkey(0,True)
             bip32_account = bip44_account.subkey(0)
+            for i in range(5):
+                address = bip32_account.subkey(i)
+                addresses.append({
+                    'address': address.bitcoin_address(),
+                    "private_key": address.wif(),
+                    "public_key": address.sec_as_hex(),
+                })
         else:
             node = BIP32Node.from_master_secret(
                 seed,
