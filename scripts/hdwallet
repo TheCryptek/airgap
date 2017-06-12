@@ -5,7 +5,6 @@ from pycoin.key.BIP32Node import BIP32Node
 from pycoin.key.key_from_text import key_from_text
 from pycoin.networks.registry import network_for_netcode
 from pycoin.encoding import to_bytes_32
-from rlp.utils import decode_hex
 from Crypto.Hash import keccak
 import json
 
