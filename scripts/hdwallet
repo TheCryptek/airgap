@@ -3,20 +3,35 @@ from mnemonic import Mnemonic
 from binascii import hexlify
 from pycoin.key.BIP32Node import BIP32Node
 from pycoin.key.key_from_text import key_from_text
-from pycoin.networks.all import BUILT_IN_NETWORKS
+from pycoin.networks.registry import network_for_netcode
 from pycoin.encoding import to_bytes_32
 from rlp.utils import decode_hex
 from Crypto.Hash import keccak
 import json
+
+networks = [
+    { 'code':'BTC', 'name':'Bitcoin','slip44':0 },
+    { 'code':'LTC', 'name':'Litecoin','slip44':2 },
+    { 'code':'DOGE', 'name':'Dogecoin','slip44':3 },
+    { 'code':'DASH', 'name':'Dash','slip44':5 },
+    { 'code':'FTC', 'name':'Feathercoin','slip44':8 },
+    { 'code':'BC', 'name':'Blackcoin','slip44':10 },
+    { 'code':'UNO', 'name':'Unobtanium','slip44':92 },
+    { 'code':'JBS', 'name':'Jumbucks','slip44':26 },
+    { 'code':'MZC', 'name':'Mazacoin','slip44':13 },
+    { 'code':'RIC', 'name':'Riecoin','slip44':143 },
+    { 'code':'ARG', 'name':'Argentum','slip44':45 },
+    { 'code':'ZEC', 'name':'Zcash','slip44':133 },
+    { 'code':'BTCD', 'name':'BitcoinDark','slip44':52 },
+    { 'code':'ETH', 'name':'Ethereum','slip44':60 },
+    { 'code':'XRP', 'name':'Ripple','slip44':144 },
+]
 
 def sha3(seed):
     sha3_256 = lambda x: keccak.new(digest_bits=256, data=x)
     return sha3_256(seed).digest()
 
 def gen_wallet(mnemonic=None, passphrase=""):
-    networks = [ 'ETH','XRP' ]
-    for network in BUILT_IN_NETWORKS:
-        networks.append(network.code)
     if not mnemonic:
         mnemonic = Mnemonic('english').generate(256)
     seed = Mnemonic.to_seed(mnemonic, passphrase = passphrase)
@@ -28,10 +43,12 @@ def gen_wallet(mnemonic=None, passphrase=""):
     }
     for network in networks:
         addresses = []
-        if network is 'ETH':
+        if network['code'] is 'ETH':
             node = BIP32Node.from_master_secret(seed)
-            bip44_account = node.subkey_for_path(r"44'/60'/0'")
-            bip32_account = node.subkey_for_path(r"44'/60'/0'/0")
+            bip44_node = node.subkey(44,True)
+            bip44_account = \
+                bip44_node.subkey(network['slip44'],True).subkey(0,True)
+            bip32_account = bip44_account.subkey(0)
             for i in range(5):
                 address = bip32_account.subkey(i)
                 private_key = to_bytes_32(address.secret_exponent())
@@ -42,14 +59,21 @@ def gen_wallet(mnemonic=None, passphrase=""):
                     "private_key": str(hexlify(private_key),'utf-8'),
                     "public_key": address.sec_as_hex(),
                 })
-        elif network is 'XRP':
+        elif network['code'] is 'XRP':
             node = BIP32Node.from_master_secret(seed)
-            bip44_account = node.subkey_for_path(r"44'/144'/0'")
-            bip32_account = node.subkey_for_path(r"44'/144'/0'/0")
+            bip44_node = node.subkey(44,True)
+            bip44_account = \
+                bip44_node.subkey(network['slip44'],True).subkey(0,True)
+            bip32_account = bip44_account.subkey(0)
         else:
-            node = BIP32Node.from_master_secret(seed, network)
-            bip44_account = node.subkey_for_path(r"44'/0'/0'")
-            bip32_account = node.subkey_for_path(r"44'/0'/0'/0")
+            node = BIP32Node.from_master_secret(
+                seed,
+                network['code']
+            )
+            bip44_node = node.subkey(44,True)
+            bip44_account = \
+                bip44_node.subkey(network['slip44'],True).subkey(0,True)
+            bip32_account = bip44_account.subkey(0)
             for i in range(5):
                 address = bip32_account.subkey(i)
                 addresses.append({
@@ -57,7 +81,7 @@ def gen_wallet(mnemonic=None, passphrase=""):
                     "private_key": address.wif(),
                     "public_key": address.sec_as_hex(),
                 })
-        data['networks'][network] = {
+        data['networks'][network['code']] = {
             "root_key": str(node.hwif(as_private=True)),
             "extended_public_key":
                 bip32_account.wallet_key(as_private=False),
