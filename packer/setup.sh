@@ -130,7 +130,8 @@ apt install -y \
 	keyanalyze \
 	kleopatra \
 	pgpdump \
-	donkey
+	donkey \
+	ssss
 
 
 
