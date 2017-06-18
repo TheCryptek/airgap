@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from mnemonic import Mnemonic
 from binascii import hexlify
 from pycoin.key.BIP32Node import BIP32Node
@@ -31,8 +31,8 @@ def sha3(seed):
     sha3_256 = lambda x: keccak.new(digest_bits=256, data=x)
     return sha3_256(seed).digest()
 
-def gen_wallet(mnemonic=None, passphrase=""):
-    if not mnemonic:
+def gen_wallet(words=None, passphrase=""):
+    if not words:
         mnemonic = Mnemonic('english')
         words = mnemonic.generate(256)
     if mnemonic.to_entropy(words):
