@@ -35,6 +35,7 @@ apt install -y \
 	libboost-dev \
 	libboost-all-dev \
 	sudo \
+	jq \
 	qrencode \
 	haveged \
 	gnupg \
