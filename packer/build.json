@@ -1,6 +1,6 @@
 {
   "variables": {
-    "disk_size": "5000",
+    "disk_size": "15000",
     "memory": "2048m",
     "cpus": "2",
     "headless": "true",
