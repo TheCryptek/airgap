@@ -10,10 +10,30 @@ die() {
 # add sources
 cat <<-EOF >> /etc/apt/sources.list.d/backports.list
 	deb http://ftp.debian.org/debian stretch-backports main
+	deb http://ftp.debian.org/debian/ sid main contrib non-free
+EOF
+
+cat <<-EOF >> /etc/apt/preferences
+Package: *
+Pin: release a=stable
+Pin-Priority: 700
+
+Package: *
+Pin: release a=unstable
+Pin-Priority: 800
 EOF
 
 apt update
+apt upgrade -y
+
+apt-get install -t unstable -y \
+	libbitcoin-dev \
+	libbitcoin0v5
+
 apt install -y \
+	libzmq5 \
+	libboost-dev \
+	libboost-all-dev \
 	sudo \
 	qrencode \
 	haveged \
@@ -58,6 +78,9 @@ apt install -y \
 	cython \
 	cython3 \
 	python3 \
+	python-crypto \
+	python3-crypto \
+	python-pycryptopp \
 	python3-dev \
 	python-dev \
 	python-trezor \
@@ -131,8 +154,12 @@ apt install -y \
 	kleopatra \
 	pgpdump \
 	donkey \
-	ssss
-
+	ssss \
+	build-essential \
+	autoconf \
+	automake \
+	libtool \
+	pkg-config
 
 
 # Create 'airgap' user
@@ -156,20 +183,92 @@ sudo systemctl enable haveged.service
 gpg --keyserver pgp.mit.edu --recv-key 91F3B339B9A02A3D
 echo "trusted-key 91F3B339B9A02A3D" >> ~/.gnupg/gpg.conf
 
+
+# libzmq
+git clone https://github.com/zeromq/libzmq.git /tmp/libzmq
+cd /tmp/libzmq
+git checkout 2d83acceffdef71c62c936487db9478b5478a00c
+./autogen.sh
+./configure --prefix=/usr
+make
+sudo make install
+
+# libbitcoin
+git clone https://github.com/libbitcoin/libbitcoin.git /tmp/libbitcoin
+cd /tmp/libbitcoin
+git checkout ddf19b34aac222a834177830de485a665b152a6a
+./autogen.sh
+./configure --prefix=/usr
+make
+sudo make install
+
+# libbitcoin-protocol
+git clone https://github.com/libbitcoin/libbitcoin-protocol.git /tmp/libbitcoin-protocol
+cd /tmp/libbitcoin-protocol
+git checkout 57ebd9c32233a76f83038b7655b4a4f8e862bac5
+./autogen.sh
+./configure --prefix=/usr
+make
+sudo make install
+
+# libbitcoin-network
+git clone https://github.com/libbitcoin/libbitcoin-network.git /tmp/libbitcoin-network
+cd /tmp/libbitcoin-network
+git checkout 1e79325d063f4efbbdc1551b2a2cffcf0babb501
+./autogen.sh
+./configure --prefix=/usr
+make
+sudo make install
+
+# libbitcoin-client
+git clone https://github.com/libbitcoin/libbitcoin-client.git /tmp/libbitcoin-client
+cd /tmp/libbitcoin-client
+git checkout de8a7b2232d29e28e47454392dfad9bca532735b
+./autogen.sh
+./configure --prefix=/usr
+make
+sudo make install
+sudo ldconfig
+
+#libbitcoin-explorer
+git clone https://github.com/libbitcoin/libbitcoin-explorer.git /tmp/libbitcoin-explorer
+cd /tmp/libbitcoin-explorer
+git checkout 231323a5886c2ebf9d33011b8b2c3d49a9af6d52
+./autogen.sh
+./configure --prefix=/usr
+make
+sudo make install
+sudo ldconfig
+
 # bip32-utils
 git clone https://github.com/prusnak/bip32utils.git /tmp/bip32utils
 cd /tmp/bip32utils
-	git verify-commit dd9c541767a2a8ff60c7868c9f4b03277fabb8ba || {
+git verify-commit dd9c541767a2a8ff60c7868c9f4b03277fabb8ba || {
 	die "Verification of bip32utils commit failed";
 }
 git checkout dd9c541767a2a8ff60c7868c9f4b03277fabb8ba
-python setup.py install
+python3 setup.py install
+
+# python-mnemonic
+git clone https://github.com/trezor/python-mnemonic.git /tmp/mnemonic
+cd /tmp/mnemonic
+git verify-commit bd441b693271a07ee0ce51f89d3141457785b108 || {
+	die "Verification of python-mnemonic commit failed";
+}
+git checkout bd441b693271a07ee0ce51f89d3141457785b108
+python3 setup.py install
 
 # pycoin
 git clone https://github.com/richardkiss/pycoin.git /tmp/pycoin
 cd /tmp/pycoin
 git checkout 39a5f47f21f5f31c68c147dc173d9b2751c3213a
-python setup.py install
+python3 setup.py install
+
+# pycryptodome
+git clone https://github.com/Legrandin/pycryptodome.git /tmp/pycryptodome
+cd /tmp/pycryptodome
+git checkout 2e0f288809bd68a46f881865b0a60f9c54c4751f
+python3 setup.py install
 
 # Minimize the size of the disk image if fstrim is available
 if [ -x /sbin/fstrim ]; then
