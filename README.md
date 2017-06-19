@@ -222,10 +222,11 @@ zcat dist/airgap-latest.raw.gz | dd of=/dev/sdz bs=4M
 
 Boot image in qemu
 ```
+gunzip dist/airgap-latest.raw.gz
 qemu-system-x86_64]:
   -m 512M]:
   -machine type=pc,accel=kvm
-  dist/airgap-latest.raw.gz
+  dist/airgap-latest.raw
 ```
 
 ## Notes ##
