@@ -73,7 +73,7 @@ internet.
 - [hashalot]: Read and hash a passphrase
 - [yapet]: Yet Another Password Encryption Tool
 
-## Password Recovery
+### Password Recovery
 - [hydra]:
 - [pdfcrack]:
 - [fcrackzip]:
