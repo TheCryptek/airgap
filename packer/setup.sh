@@ -42,8 +42,12 @@ apt install -y \
 	gnupg2 \
 	dirmngr \
 	git \
-	libusb-dev \
+	libconfig-dev \
+	libhidapi-libusb0 \
+	libusb-1.0-0 \
+	libusb-1.0-0-dev \
 	libudev-dev \
+	libhidapi-dev \
 	expect \
 	yubikey-ksm \
 	yubikey-personalization \
@@ -183,7 +187,18 @@ sudo systemctl enable haveged.service
 # Include trusted GPG keys
 gpg --keyserver pgp.mit.edu --recv-key 91F3B339B9A02A3D
 echo "trusted-key 91F3B339B9A02A3D" >> ~/.gnupg/gpg.conf
+#gpg --keyserver pgp.mit.edu --recv-key 48BCF826EBFA4D17
+#echo "trusted-key 48BCF826EBFA4D17" >> ~/.gnupg/gpg.conf
 
+# btchip-c-api
+git clone https://github.com/LedgerHQ/btchip-c-api.git /tmp/btchip-c-api
+cd /tmp/btchip-c-api
+#git verify-commit 1d1d85b4e98316d33f001f58b4b65730a16b2426 || {
+#	die "Verification of btchip-c-api commit failed";
+#}
+git checkout 1d1d85b4e98316d33f001f58b4b65730a16b2426
+make -f Makefile.hidapi
+sudo cp bin/* /usr/local/bin/
 
 # libzmq
 git clone https://github.com/zeromq/libzmq.git /tmp/libzmq
