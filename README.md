@@ -20,13 +20,13 @@ internet.
 ## Tools ##
 
 ### Hardware Security Modules
-- [btchip] : Utilities to interact with Ledger hardware wallets
-- [trezorctl] : Utilities to interact with Trezor hardware wallet
-- [yubico-piv-tool] :
-- [yubikey-hsm] :
-- [yubico-personalization] :
-- [yhsm-tools] :
-- [ykneomgr] :
+- [btchip]: Utilities to interact with Ledger hardware wallets
+- [trezorctl]: Utilities to interact with Trezor hardware wallet
+- [yubico-piv-tool]:
+- [yubikey-hsm]:
+- [yubico-personalization]:
+- [yhsm-tools]:
+- [ykneomgr]:
 
 ### Cryptocurrency
 - [gen-hdwallet]: Simple script to export a bip44 wallet as jsony
