@@ -7,6 +7,9 @@ die() {
     exit 1
 }
 
+# use tmpfs workdir
+mount -t tmpfs -o size=8G tmpfs /tmp/
+
 # add sources
 cat <<-EOF >> /etc/apt/sources.list.d/backports.list
 	deb http://ftp.debian.org/debian stretch-backports main
@@ -23,14 +26,9 @@ Pin: release a=unstable
 Pin-Priority: 800
 EOF
 
-apt update
-apt upgrade -y
-
-apt-get install -t unstable -y \
-	libbitcoin-dev \
-	libbitcoin0v5
-
 apt install -y \
+	libsecp256k1-0 \
+	libsecp256k1-dev \
 	libzmq5 \
 	libboost-dev \
 	libboost-all-dev \
@@ -61,6 +59,7 @@ apt install -y \
 	ssdeep \
 	hash-slinger \
 	passwordmaker-cli \
+	pwgen \
 	apg \
 	libpwquality-tools \
 	scrypt \
@@ -92,7 +91,6 @@ apt install -y \
 	python3-flufl.password \
 	python-setuptools \
 	python3-setuptools \
-	python-trezor \
 	python-mnemonic \
 	python-electrum \
 	electrum \
@@ -141,8 +139,8 @@ apt install -y \
 	python-pyscard \
 	keyringer \
 	keyutils \
-	vim \
 	paperkey \
+	vim \
 	nano \
 	emacs \
 	seccure \
@@ -156,7 +154,6 @@ apt install -y \
 	htop \
 	x509-util \
 	keyanalyze \
-	kleopatra \
 	pgpdump \
 	donkey \
 	ssss \
@@ -172,6 +169,9 @@ useradd -m 'airgap' -G sudo -s /bin/bash
 sudo passwd --delete airgap
 echo "airgap ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
+# Clean login prompt
+touch /home/airgap/.hushlogin
+echo "clear" >> /home/airgap/.bash_profile
 chown -R airgap:airgap /home/airgap
 
 # Automatically log in to 'airgap' user on boot
@@ -183,6 +183,7 @@ cat <<-EOF > /etc/systemd/system/getty@tty1.service.d/autologin.conf
 EOF
 sudo systemctl enable getty@tty1.service
 sudo systemctl enable haveged.service
+sudo systemctl disable apache2
 
 # Include trusted GPG keys
 gpg --keyserver pgp.mit.edu --recv-key 91F3B339B9A02A3D
