@@ -124,6 +124,7 @@ internet.
 - [nodejs]: evented I/O for V8 javascript
 - [perl]: Larry Wall's Practical Extraction and Report Language
 
+[perl]: https://www.perl.org/
 [yapet]: http://www.guengel.ch/myapps/yapet/
 [otpw-bin]: http://www.cl.cam.ac.uk/~mgk25/otpw.html
 [ssdeep]: http://ssdeep.sourceforge.net/
