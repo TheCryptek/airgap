@@ -216,12 +216,26 @@ To build an image suitable for a liveusb do:
 ```
 make all
 ```
-## Usage ##
+## Install ##
 
-Create LiveUSB:
+Download:
 ```
-zcat dist/airgap-latest.raw.gz | dd of=/dev/sdz bs=4M
+wget https://github.com/lrvick/airgap/releases/download/v0.0.1/airgap-201706210145.raw.gz
+wget https://github.com/lrvick/airgap/releases/download/v0.0.1/airgap-201706210145.raw.gz.sig
 ```
+
+Verify
+```
+gpg --recv-key 8E47A1EC35A1551D
+gpg --verify airgap-201706210145.raw.gz.sig
+```
+
+Create bootable USB drive:
+```
+gunzip airgap-201706210145.raw.gz | pv | sudo dd of=/dev/sda
+```
+
+Note: The above assumes /dev/sda is a flash media device of 8GB or larger.
 
 ## Development ##
 
