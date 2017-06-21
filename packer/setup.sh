@@ -287,6 +287,19 @@ cd /tmp/pycryptodome
 git checkout 2e0f288809bd68a46f881865b0a60f9c54c4751f
 python3 setup.py install
 
+
+# remove cruft
+rm -rf \
+	/var/cache/apt/* \
+	/var/cache/debconf/* \
+	/var/lib/mysql/* \
+	/var/lib/apt/* \
+	/var/log/* \
+	/usr/share/doc/* \
+	/usr/share/icons/* \
+	/tmp/*
+
+
 # Minimize the size of the disk image if fstrim is available
 if [ -x /sbin/fstrim ]; then
    fstrim -av
