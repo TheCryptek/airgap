@@ -1,7 +1,7 @@
 {
   "variables": {
-    "disk_size": "5000",
-    "memory": "2048M",
+    "disk_size": "8000",
+    "memory": "10G",
     "cpus": "2",
     "headless": "true",
     "iso_url": "https://cdimage.debian.org/mirror/cdimage/stretch_di_rc4/multi-arch/iso-cd/debian-stretch-DI-rc4-amd64-i386-netinst.iso",

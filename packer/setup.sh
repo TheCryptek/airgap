@@ -7,6 +7,9 @@ die() {
     exit 1
 }
 
+# use tmpfs workdir
+mount -t tmpfs -o size=8G tmpfs /tmp/
+
 # add sources
 cat <<-EOF >> /etc/apt/sources.list.d/backports.list
 	deb http://ftp.debian.org/debian stretch-backports main
@@ -23,26 +26,26 @@ Pin: release a=unstable
 Pin-Priority: 800
 EOF
 
-apt update
-apt upgrade -y
-
-apt-get install -t unstable -y \
-	libbitcoin-dev \
-	libbitcoin0v5
-
 apt install -y \
+	libsecp256k1-0 \
+	libsecp256k1-dev \
 	libzmq5 \
 	libboost-dev \
 	libboost-all-dev \
 	sudo \
+	jq \
 	qrencode \
 	haveged \
 	gnupg \
 	gnupg2 \
 	dirmngr \
 	git \
-	libusb-dev \
+	libconfig-dev \
+	libhidapi-libusb0 \
+	libusb-1.0-0 \
+	libusb-1.0-0-dev \
 	libudev-dev \
+	libhidapi-dev \
 	expect \
 	yubikey-ksm \
 	yubikey-personalization \
@@ -56,6 +59,7 @@ apt install -y \
 	ssdeep \
 	hash-slinger \
 	passwordmaker-cli \
+	pwgen \
 	apg \
 	libpwquality-tools \
 	scrypt \
@@ -87,7 +91,6 @@ apt install -y \
 	python3-flufl.password \
 	python-setuptools \
 	python3-setuptools \
-	python-trezor \
 	python-mnemonic \
 	python-electrum \
 	electrum \
@@ -136,8 +139,8 @@ apt install -y \
 	python-pyscard \
 	keyringer \
 	keyutils \
-	vim \
 	paperkey \
+	vim \
 	nano \
 	emacs \
 	seccure \
@@ -151,7 +154,6 @@ apt install -y \
 	htop \
 	x509-util \
 	keyanalyze \
-	kleopatra \
 	pgpdump \
 	donkey \
 	ssss \
@@ -167,6 +169,9 @@ useradd -m 'airgap' -G sudo -s /bin/bash
 sudo passwd --delete airgap
 echo "airgap ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
+# Clean login prompt
+touch /home/airgap/.hushlogin
+echo "clear" >> /home/airgap/.bash_profile
 chown -R airgap:airgap /home/airgap
 
 # Automatically log in to 'airgap' user on boot
@@ -178,11 +183,23 @@ cat <<-EOF > /etc/systemd/system/getty@tty1.service.d/autologin.conf
 EOF
 sudo systemctl enable getty@tty1.service
 sudo systemctl enable haveged.service
+sudo systemctl disable apache2
 
 # Include trusted GPG keys
 gpg --keyserver pgp.mit.edu --recv-key 91F3B339B9A02A3D
 echo "trusted-key 91F3B339B9A02A3D" >> ~/.gnupg/gpg.conf
+#gpg --keyserver pgp.mit.edu --recv-key 48BCF826EBFA4D17
+#echo "trusted-key 48BCF826EBFA4D17" >> ~/.gnupg/gpg.conf
 
+# btchip-c-api
+git clone https://github.com/LedgerHQ/btchip-c-api.git /tmp/btchip-c-api
+cd /tmp/btchip-c-api
+#git verify-commit 1d1d85b4e98316d33f001f58b4b65730a16b2426 || {
+#	die "Verification of btchip-c-api commit failed";
+#}
+git checkout 1d1d85b4e98316d33f001f58b4b65730a16b2426
+make -f Makefile.hidapi
+sudo cp bin/* /usr/local/bin/
 
 # libzmq
 git clone https://github.com/zeromq/libzmq.git /tmp/libzmq
@@ -269,6 +286,19 @@ git clone https://github.com/Legrandin/pycryptodome.git /tmp/pycryptodome
 cd /tmp/pycryptodome
 git checkout 2e0f288809bd68a46f881865b0a60f9c54c4751f
 python3 setup.py install
+
+
+# remove cruft
+rm -rf \
+	/var/cache/apt/* \
+	/var/cache/debconf/* \
+	/var/lib/mysql/* \
+	/var/lib/apt/* \
+	/var/log/* \
+	/usr/share/doc/* \
+	/usr/share/icons/* \
+	/tmp/*
+
 
 # Minimize the size of the disk image if fstrim is available
 if [ -x /sbin/fstrim ]; then
