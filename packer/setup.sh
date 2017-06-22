@@ -186,6 +186,7 @@ cat <<-EOF > /etc/systemd/system/getty@tty1.service.d/autologin.conf
 EOF
 sudo systemctl enable getty@tty1.service
 sudo systemctl enable haveged.service
+sudo systemctl enable neard.service
 sudo systemctl disable apache2
 
 # Include trusted GPG keys
@@ -303,12 +304,6 @@ git checkout 606a6d83d972ba7c26012647ea3d17db1f503811
 python3 setup.py install
 
 # ndeftool
-git clone https://github.com/nfcpy/ndeftool.git /tmp/ndeftool
-cd /tmp/ndeftool
-git checkout 20851ced32458f0d9e416dc35c63d77729a773c4
-python3 setup.py install
-
-# tagtool
 git clone https://github.com/nfcpy/ndeftool.git /tmp/ndeftool
 cd /tmp/ndeftool
 git checkout 20851ced32458f0d9e416dc35c63d77729a773c4
