@@ -90,7 +90,9 @@ internet.
 - [debsigs]: Sign Debian packages
 
 ### RFID / NFC
+- [nfctool]: Manage NFC devices and read/write tags via neard.
 - [neard]: Near Field Communication (NFC) management daemon
+- [ndeftool]: Create/Manipulate NDEF formatted packets
 - [cardpeek]: Tool to read the contents of ISO7816 smartcards
 - [libchipcard-tools]: Tools for accessing chipcards
 - [pcsc-tools]: Some tools to use with smart cards and PC/SC
@@ -124,6 +126,8 @@ internet.
 - [nodejs]: evented I/O for V8 javascript
 - [perl]: Larry Wall's Practical Extraction and Report Language
 
+[nfctool]: http://manpages.ubuntu.com/manpages/trusty/man1/nfctool.1.html
+[ndeftool]: https://github.com/nfcpy/ndeftool
 [haveged]: http://issihosts.com/haveged/
 [bx]: https://github.com/libbitcoin/libbitcoin-explorer/wiki
 [hash-slinger]: https://packages.qa.debian.org/h/hash-slinger.html

@@ -82,6 +82,7 @@ apt install -y \
 	cython \
 	cython3 \
 	python3 \
+	python3-click \
 	python-crypto \
 	python3-crypto \
 	python-pycryptopp \
@@ -124,9 +125,11 @@ apt install -y \
 	debsigs \
 	pius \
 	libnfc-bin \
+	libnfc-examples \
 	libnfc-dev \
 	libnfc5 \
 	neard \
+	neard-tools \
 	cardpeek \
 	cardpeek-data \
 	rfdump \
@@ -287,6 +290,31 @@ cd /tmp/pycryptodome
 git checkout 2e0f288809bd68a46f881865b0a60f9c54c4751f
 python3 setup.py install
 
+# nfcpy
+git clone https://github.com/nfcpy/nfcpy.git /tmp/nfcpy
+cd /tmp/nfcpy
+git checkout c1d0f5f283f65b5671e9482a011e1118495129c1
+python3 setup.py install
+
+# ndeflib
+git clone https://github.com/nfcpy/ndeflib.git /tmp/ndeflib
+cd /tmp/ndeflib
+git checkout 606a6d83d972ba7c26012647ea3d17db1f503811
+python3 setup.py install
+
+# ndeftool
+git clone https://github.com/nfcpy/ndeftool.git /tmp/ndeftool
+cd /tmp/ndeftool
+git checkout 20851ced32458f0d9e416dc35c63d77729a773c4
+python3 setup.py install
+
+# tagtool
+git clone https://github.com/nfcpy/ndeftool.git /tmp/ndeftool
+cd /tmp/ndeftool
+git checkout 20851ced32458f0d9e416dc35c63d77729a773c4
+python3 setup.py install
+
+chmod +x /usr/local/bin/*
 
 # remove cruft
 rm -rf \
