@@ -128,6 +128,8 @@ apt install -y \
 	libnfc-examples \
 	libnfc-dev \
 	libnfc5 \
+	libfreefare-bin \
+	libfreefare-dev \
 	neard \
 	neard-tools \
 	cardpeek \
@@ -164,6 +166,7 @@ apt install -y \
 	autoconf \
 	automake \
 	libtool \
+	usbutils \
 	pkg-config
 
 
@@ -194,6 +197,22 @@ gpg --keyserver pgp.mit.edu --recv-key 91F3B339B9A02A3D
 echo "trusted-key 91F3B339B9A02A3D" >> ~/.gnupg/gpg.conf
 #gpg --keyserver pgp.mit.edu --recv-key 48BCF826EBFA4D17
 #echo "trusted-key 48BCF826EBFA4D17" >> ~/.gnupg/gpg.conf
+
+# mfcuk
+git clone https://github.com/nfc-tools/mfcuk /tmp/mfcuk
+cd /tmp/mfcuk
+git checkout 5acc9f40a04be407443ebfe74d66bc53f8ab337f
+autoreconf -vis
+./configure --prefix=/usr
+make install
+
+# mfoc
+git clone https://github.com/nfc-tools/mfoc /tmp/mfoc
+cd /tmp/mfoc
+git checkout 9d9f01fba4ee145bc873a85898b74041ca6d8831
+autoreconf -vis
+./configure --prefix=/usr
+make install
 
 # btchip-c-api
 git clone https://github.com/LedgerHQ/btchip-c-api.git /tmp/btchip-c-api

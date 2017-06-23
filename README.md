@@ -90,6 +90,9 @@ internet.
 - [debsigs]: Sign Debian packages
 
 ### RFID / NFC
+- [mfoc]: MiFare Password Cracker
+- [mfcuk]: MiFare Classic Universal toolKit (MFCUK)
+- [libfreefare]: Mifare/desfire manipulation tools
 - [nfctool]: Manage NFC devices and read/write tags via neard.
 - [neard]: Near Field Communication (NFC) management daemon
 - [ndeftool]: Create/Manipulate NDEF formatted packets
@@ -120,12 +123,17 @@ internet.
 - [guncat]: Catenates files while decrypting PGP-encrypted sections
 - [zfsnap]: Automatic snapshot creation and removal for ZFS
 - [zfs-fuse]: ZFS on FUSE
+- [usbutils]: Examine attached USB devices
 
 ### Programming Languages
 - [python]: interactive high-level object-oriented language
 - [nodejs]: evented I/O for V8 javascript
 - [perl]: Larry Wall's Practical Extraction and Report Language
 
+[usbutils]: https://github.com/gregkh/usbutils
+[mfoc]: https://github.com/nfc-tools/mfoc
+[mfcuk]: https://github.com/nfc-tools/mfcuk
+[libfreefare]: http://www.nfc-tools.org/index.php?title=Libfreefare
 [nfctool]: http://manpages.ubuntu.com/manpages/trusty/man1/nfctool.1.html
 [ndeftool]: https://github.com/nfcpy/ndeftool
 [haveged]: http://issihosts.com/haveged/
