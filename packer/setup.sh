@@ -36,6 +36,8 @@ apt install -y \
 	jq \
 	qrencode \
 	haveged \
+	libftdi-dev \
+	rng-tools5 \
 	gnupg \
 	gnupg2 \
 	dirmngr \
@@ -197,6 +199,14 @@ gpg --keyserver pgp.mit.edu --recv-key 91F3B339B9A02A3D
 echo "trusted-key 91F3B339B9A02A3D" >> ~/.gnupg/gpg.conf
 #gpg --keyserver pgp.mit.edu --recv-key 48BCF826EBFA4D17
 #echo "trusted-key 48BCF826EBFA4D17" >> ~/.gnupg/gpg.conf
+
+# infnoise
+git clone https://github.com/waywardgeek/infnoise.git /tmp/infnoise
+cd /tmp/infnoise
+git checkout 3e406cfbb23e2fa74102d197cd44daee1e68e67a
+cd software
+make
+cp infnoise /usr/local/bin/
 
 # mfcuk
 git clone https://github.com/nfc-tools/mfcuk /tmp/mfcuk

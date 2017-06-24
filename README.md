@@ -34,10 +34,14 @@ internet.
 - [bx]: Bitcoin tools for signing transactions, managing keys, etc.
 - [electrum]: Utilities for popular bitcoin wallet format
 
+### Entropy
+- [haveged]: Dameon that acts as a software random number generator
+- [rng-tools]: Daemon that supports many different hardware TRNG devices
+- [infnoise]: Fetch entropy from the Infinite Noise TRNG
+
 ### Cryptography
 - [gen-gpgchain]: Generate 4096RSA gpg keychain suitable for a hardware token
 - [gnupg]: Perform PGP operations for local keys or smartcards
-- [haveged]: Dameon that generates random entropy for secure key creation.
 - [scrypt]: creating password key derivations using the Script algorithm
 - [ssdeep]: Recursive piecewise hashing tool
 - [hash-slinger]: Create TLSA records for the DANE protocol
@@ -136,6 +140,8 @@ internet.
 [libfreefare]: http://www.nfc-tools.org/index.php?title=Libfreefare
 [nfctool]: http://manpages.ubuntu.com/manpages/trusty/man1/nfctool.1.html
 [ndeftool]: https://github.com/nfcpy/ndeftool
+[infnoise]: https://github.com/waywardgeek/infnoise
+[rng-tools]: https://www.kernel.org/doc/Documentation/hw_random.txt
 [haveged]: http://issihosts.com/haveged/
 [bx]: https://github.com/libbitcoin/libbitcoin-explorer/wiki
 [hash-slinger]: https://packages.qa.debian.org/h/hash-slinger.html
