@@ -221,13 +221,6 @@ internet.
 [btchip]: https://github.com/LedgerHQ/btchip-c-api
 [libbitcoin-explorr]: https://github.com/libbitcoin/libbitcoin-explorer/wiki
 
-## Build ##
-
-To build an image suitable for a liveusb do:
-
-```
-make all
-```
 ## Install ##
 
 Download:
@@ -249,7 +242,99 @@ gunzip airgap-201706210145.raw.gz | pv | sudo dd of=/dev/sda
 
 Note: The above assumes /dev/sda is a flash media device of 8GB or larger.
 
+## Examples ##
+
+### HD Cryptocurrency Wallet ###
+
+#### Generate 24 Word Mnemonic Seed ####
+
+##### Option 1: Symmetric Encryption (Passphrase)  #####
+```
+bx seed -b 256 | bx mnemonic-new | gpg -ac > mnemonic.asc
+```
+##### Option 2: Asymmetric Encryption (To imported public key)  #####
+
+```
+gpg --import /mnt/some-disk/your-pubkey.asc
+bx seed -b 256 | bx mnemonic-new | gpg -aer 0xYOURKEYID > mnemonic.asc
+```
+
+#### Backup ####
+
+##### Option 1: Flash Drive #####
+Identify attached flash drive:
+```
+lsblk
+```
+
+Format (assuming drive is /dev/sdb):
+```
+sudo mkfs.ext4 -j /dev/sdb
+```
+
+Mount filesystem:
+```
+sudo mkdir /mnt/backup
+sudo mount /dev/sdb /mnt/backup
+```
+
+Copy backup file:
+```
+cp mnemonic.asc /mnt/backup/
+```
+
+Unmount drive:
+```
+unmount /mnt/backup
+```
+
+##### Option 2: NFC Tag #####
+
+Write (Assuming a common Mifare Classic tag):
+```
+ndeftool text "$(cat mnemonic.asc)" > mnemonic.ndef
+mifare-classic-write-ndef -y -i mnemonic.ndef
+```
+
+Verify:
+```
+file=$(mktemp) && sudo nfc-mfclassic r a u $file && cat $file | xxd
+```
+
+#### Initialize Hardware Wallet ####
+
+##### Trezor #####
+
+```
+gpg -d mnemonic.asc
+trezorctl recovery_device
+```
+
+##### Ledger #####
+You will need to choose a pin code.
+
+Assuming you choose PIN 12345678:
+```
+btchip_setup \
+  "WALLET" \
+  "RFC6979" \
+  "" \
+  "" \
+  "12345678" # Your pin here \
+  "" \
+  "QWERTY" \
+  "$(bx mnemonic-to-seed --language en $(gpg -d mnemonic.asc))" \
+  "" \
+  ""
+```
+
 ## Development ##
+
+To build an image suitable for a liveusb do:
+
+```
+make all
+```
 
 Boot image in qemu
 ```
