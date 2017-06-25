@@ -36,6 +36,8 @@ apt install -y \
 	jq \
 	qrencode \
 	haveged \
+	libftdi-dev \
+	rng-tools5 \
 	gnupg \
 	gnupg2 \
 	dirmngr \
@@ -82,6 +84,7 @@ apt install -y \
 	cython \
 	cython3 \
 	python3 \
+	python3-click \
 	python-crypto \
 	python3-crypto \
 	python-pycryptopp \
@@ -124,9 +127,13 @@ apt install -y \
 	debsigs \
 	pius \
 	libnfc-bin \
+	libnfc-examples \
 	libnfc-dev \
 	libnfc5 \
+	libfreefare-bin \
+	libfreefare-dev \
 	neard \
+	neard-tools \
 	cardpeek \
 	cardpeek-data \
 	rfdump \
@@ -161,6 +168,7 @@ apt install -y \
 	autoconf \
 	automake \
 	libtool \
+	usbutils \
 	pkg-config
 
 
@@ -183,6 +191,7 @@ cat <<-EOF > /etc/systemd/system/getty@tty1.service.d/autologin.conf
 EOF
 sudo systemctl enable getty@tty1.service
 sudo systemctl enable haveged.service
+sudo systemctl enable neard.service
 sudo systemctl disable apache2
 
 # Include trusted GPG keys
@@ -190,6 +199,30 @@ gpg --keyserver pgp.mit.edu --recv-key 91F3B339B9A02A3D
 echo "trusted-key 91F3B339B9A02A3D" >> ~/.gnupg/gpg.conf
 #gpg --keyserver pgp.mit.edu --recv-key 48BCF826EBFA4D17
 #echo "trusted-key 48BCF826EBFA4D17" >> ~/.gnupg/gpg.conf
+
+# infnoise
+git clone https://github.com/waywardgeek/infnoise.git /tmp/infnoise
+cd /tmp/infnoise
+git checkout 3e406cfbb23e2fa74102d197cd44daee1e68e67a
+cd software
+make
+cp infnoise /usr/local/bin/
+
+# mfcuk
+git clone https://github.com/nfc-tools/mfcuk /tmp/mfcuk
+cd /tmp/mfcuk
+git checkout 5acc9f40a04be407443ebfe74d66bc53f8ab337f
+autoreconf -vis
+./configure --prefix=/usr
+make install
+
+# mfoc
+git clone https://github.com/nfc-tools/mfoc /tmp/mfoc
+cd /tmp/mfoc
+git checkout 9d9f01fba4ee145bc873a85898b74041ca6d8831
+autoreconf -vis
+./configure --prefix=/usr
+make install
 
 # btchip-c-api
 git clone https://github.com/LedgerHQ/btchip-c-api.git /tmp/btchip-c-api
@@ -287,6 +320,25 @@ cd /tmp/pycryptodome
 git checkout 2e0f288809bd68a46f881865b0a60f9c54c4751f
 python3 setup.py install
 
+# nfcpy
+git clone https://github.com/nfcpy/nfcpy.git /tmp/nfcpy
+cd /tmp/nfcpy
+git checkout c1d0f5f283f65b5671e9482a011e1118495129c1
+python3 setup.py install
+
+# ndeflib
+git clone https://github.com/nfcpy/ndeflib.git /tmp/ndeflib
+cd /tmp/ndeflib
+git checkout 606a6d83d972ba7c26012647ea3d17db1f503811
+python3 setup.py install
+
+# ndeftool
+git clone https://github.com/nfcpy/ndeftool.git /tmp/ndeftool
+cd /tmp/ndeftool
+git checkout 20851ced32458f0d9e416dc35c63d77729a773c4
+python3 setup.py install
+
+chmod +x /usr/local/bin/*
 
 # remove cruft
 rm -rf \
