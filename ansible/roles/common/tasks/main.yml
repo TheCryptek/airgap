@@ -1,0 +1,63 @@
+---
+- apt_repository:
+    repo: deb http://ftp.debian.org/debian stretch-backports main
+    state: present
+
+- apt_repository:
+    repo: deb http://ftp.debian.org/debian/ sid main contrib non-free
+    state: present
+
+- name: Install APT packages
+  action: apt pkg={{item}} state=installed
+  with_items:
+    - sudo
+    - git
+    - build-essential
+    - autoconf
+    - automake
+    - pkg-config
+    - python-setuptools
+    - python3-setuptools
+    - libconfig-dev
+
+- user:
+    name: airgap
+    shell: /bin/bash
+    groups: sudo
+    createhome: true
+    append: yes
+
+- shell: passwd --delete airgap
+
+- lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%sudo ALL\=\(ALL\) NOPASSWD: ALL'
+    line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+
+- lineinfile:
+    dest: /home/airgap/.bash_profile
+    state: present
+    regexp: '^clear$'
+    line: 'clear'
+
+- file:
+    path: /home/airgap/.hushlogin
+    state: touch
+    owner: airgap
+    group: airgap
+    mode: "0755"
+
+- file:
+    path: /etc/systemd/system/getty@tty1.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- template:
+    src: autologin.conf
+    dest: /etc/systemd/system/getty@tty1.service.d/autologin.conf
+    mode: 644
+
+- systemd: name=getty@tty1 enabled=yes masked=no

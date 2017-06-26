@@ -1,0 +1,16 @@
+---
+- name: install packages
+  action: apt pkg={{item}} state=installed
+  with_items:
+    - hydra
+    - fcrackzip
+    - pdfcrack
+    - samdump2
+    - lcrack
+    - rarcrack
+    - ophcrack-cli
+    - chntpw
+    - crack
+    - crack-common
+    - nasty
+    - john

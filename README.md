@@ -62,6 +62,7 @@ internet.
 - [paperkey]: Backup PGP key to paper in a human friendly format
 - [qrencode]: Render data as QR code for easy transfer to mobile device
 - [duplicity]: GPG encrypted backup solution
+- [rsync]: Fast, versatile, remote (and local) file-copying tool
 
 ### Password Management
 - [pass]: Simple text file based password manager based on GPG and Git
@@ -110,6 +111,7 @@ internet.
 - [mac-robber]: Collects data from allocated files in a mounted file system
 - [rkhunter]: Rootkit, backdoor, sniffer and exploit scanner
 - [chkrootkit]: Rootkit detector
+- [unhide]: Find processes and TCP/UDP ports hidden by rootkits
 
 ### Utilities
 - [vim]: Vi IMproved - enhanced vi editor
@@ -119,7 +121,6 @@ internet.
 - [jq]: Extract, manipulate, or create JSON
 - [tmux]: Terminal window manager and multiplexer
 - [ncdu]: Ncurses disk usage viewer
-- [rsync]: Fast, versatile, remote (and local) file-copying tool
 - [glances]: CLI curses based monitoring tool
 - [htop]: Interactive processes viewer/manager
 - [strace]: A system call tracer
@@ -134,6 +135,7 @@ internet.
 - [nodejs]: evented I/O for V8 javascript
 - [perl]: Larry Wall's Practical Extraction and Report Language
 
+[unhide]: http://www.unhide-forensics.info/
 [usbutils]: https://github.com/gregkh/usbutils
 [mfoc]: https://github.com/nfc-tools/mfoc
 [mfcuk]: https://github.com/nfc-tools/mfcuk

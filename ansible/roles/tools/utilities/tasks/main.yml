@@ -1,0 +1,22 @@
+---
+- name: install packages
+  action: apt pkg={{item}} state=installed
+  with_items:
+    - qrencode
+    - jq
+    - expect
+    - rsync
+    - gpm
+    - ncdu
+    - bzip2
+    - p7zip
+    - strace
+    - gdb
+    - vim
+    - nano
+    - emacs
+    - parted
+    - hwinfo
+    - lvm2
+    - glances
+    - htop

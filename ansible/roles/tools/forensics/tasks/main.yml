@@ -1,0 +1,9 @@
+---
+- name: install packages
+  action: apt pkg={{item}} state=installed
+  with_items:
+    - chkrootkit
+    - rkhunter
+    - mac-robber
+    - binwalk
+    - unhide
