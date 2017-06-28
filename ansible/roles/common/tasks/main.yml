@@ -35,6 +35,14 @@
     regexp: '^%sudo ALL\=\(ALL\) NOPASSWD: ALL'
     line: '%sudo ALL=(ALL) NOPASSWD: ALL'
 
+
+- file:
+    path: /home/airgap/.bash_profile
+    state: touch
+    owner: airgap
+    group: airgap
+    mode: "0755"
+
 - lineinfile:
     dest: /home/airgap/.bash_profile
     state: present
@@ -58,6 +66,6 @@
 - template:
     src: autologin.conf
     dest: /etc/systemd/system/getty@tty1.service.d/autologin.conf
-    mode: 644
+    mode: "0755"
 
 - systemd: name=getty@tty1 enabled=yes masked=no
