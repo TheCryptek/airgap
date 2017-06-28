@@ -27,6 +27,8 @@
     - pcscd
     - python-pyscard
 
+- systemd: name=pcscd enabled=yes masked=no
+
 - git:
     repo: 'https://github.com/nfc-tools/mfcuk.git'
     dest: /tmp/mfcuk
