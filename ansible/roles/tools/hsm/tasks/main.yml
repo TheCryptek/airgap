@@ -6,9 +6,9 @@
     - libhidapi-libusb0
     - libusb-1.0-0
     - libusb-1.0-0-dev
+    - scdaemon
     - libudev-dev
     - libhidapi-dev
-    - yubikey-ksm
     - yubikey-personalization
     - yubico-piv-tool
     - yhsm-tools
