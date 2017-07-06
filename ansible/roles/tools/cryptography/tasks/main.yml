@@ -1,0 +1,24 @@
+---
+- name: install packages
+  action: apt pkg={{item}} state=installed
+  with_items:
+    - gnupg
+    - gnupg2
+    - dirmngr
+    - scrypt
+    - ssdeep
+    - hash-slinger
+    - seccure
+    - ssl-cert
+    - openssl
+    - gnutls-bin
+    - monkeysphere
+    - pgpgpg
+    - signing-party
+    - gpgv
+    - gpgv2
+    - x509-util
+    - keyanalyze
+    - pgpdump
+    - keyutils
+    - pius

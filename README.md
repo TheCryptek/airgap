@@ -62,6 +62,7 @@ internet.
 - [paperkey]: Backup PGP key to paper in a human friendly format
 - [qrencode]: Render data as QR code for easy transfer to mobile device
 - [duplicity]: GPG encrypted backup solution
+- [rsync]: Fast, versatile, remote (and local) file-copying tool
 
 ### Password Management
 - [pass]: Simple text file based password manager based on GPG and Git
@@ -110,6 +111,7 @@ internet.
 - [mac-robber]: Collects data from allocated files in a mounted file system
 - [rkhunter]: Rootkit, backdoor, sniffer and exploit scanner
 - [chkrootkit]: Rootkit detector
+- [unhide]: Find processes and TCP/UDP ports hidden by rootkits
 
 ### Utilities
 - [vim]: Vi IMproved - enhanced vi editor
@@ -119,7 +121,6 @@ internet.
 - [jq]: Extract, manipulate, or create JSON
 - [tmux]: Terminal window manager and multiplexer
 - [ncdu]: Ncurses disk usage viewer
-- [rsync]: Fast, versatile, remote (and local) file-copying tool
 - [glances]: CLI curses based monitoring tool
 - [htop]: Interactive processes viewer/manager
 - [strace]: A system call tracer
@@ -134,6 +135,7 @@ internet.
 - [nodejs]: evented I/O for V8 javascript
 - [perl]: Larry Wall's Practical Extraction and Report Language
 
+[unhide]: http://www.unhide-forensics.info/
 [usbutils]: https://github.com/gregkh/usbutils
 [mfoc]: https://github.com/nfc-tools/mfoc
 [mfcuk]: https://github.com/nfc-tools/mfcuk
@@ -252,6 +254,21 @@ Note: The above assumes /dev/sda is a flash media device of 8GB or larger.
 
 ### HD Cryptocurrency Wallet ###
 
+#### Start Hardware Entropy Generator (Optional) ####
+
+If you want to be extra paranoid you can use a hardware random number
+generator such as an Infinite Noise or a TrueRNG.
+
+This will rule out the possibility of a flaw in the software random number
+generator built into your system that allows an attacker to predict it
+and re-create any secret keys you generate during this process.
+
+In the case of an Infinite Noise device you can insert it and run:
+
+```
+sudo infnoise --dev-random &
+```
+
 #### Generate 24 Word Mnemonic Seed ####
 
 ##### Option 1: Symmetric Encryption (Passphrase)  #####
@@ -260,8 +277,13 @@ bx seed -b 256 | bx mnemonic-new | gpg -ac > mnemonic.asc
 ```
 ##### Option 2: Asymmetric Encryption (To imported public key)  #####
 
+You will need to copy your GPG public keys to a flash drive on another system.
+
+Assuming the drive is is /dev/sda you could do:
+
 ```
-gpg --import /mnt/some-disk/your-pubkey.asc
+mount /dev/sda1 /mnt/
+gpg --import /mnt/your-pubkey.asc
 bx seed -b 256 | bx mnemonic-new | gpg -aer 0xYOURKEYID > mnemonic.asc
 ```
 
@@ -299,12 +321,15 @@ unmount /mnt/backup
 Write (Assuming a common Mifare Classic tag):
 ```
 ndeftool text "$(cat mnemonic.asc)" > mnemonic.ndef
-mifare-classic-write-ndef -y -i mnemonic.ndef
+sudo mifare-classic-write-ndef -y -i mnemonic.ndef
 ```
 
 Verify:
 ```
-file=$(mktemp) && sudo nfc-mfclassic r a u $file && cat $file | xxd
+sudo mifare-classic-read-ndef -y -o - \
+  | ndeftool --silent load - print \
+  | sed -e 's/^\([^-]\+\)-/-/g' \
+  | gpg -d
 ```
 
 #### Initialize Hardware Wallet ####
@@ -313,7 +338,7 @@ file=$(mktemp) && sudo nfc-mfclassic r a u $file && cat $file | xxd
 
 ```
 gpg -d mnemonic.asc
-trezorctl recovery_device
+trezorctl recovery_device -w 24 -t matrix
 ```
 
 ##### Ledger #####
@@ -345,10 +370,10 @@ make all
 Boot image in qemu
 ```
 gunzip dist/airgap-latest.raw.gz
-qemu-system-x86_64]:
-  -m 512M]:
-  -machine type=pc,accel=kvm
-  dist/airgap-latest.raw
+qemu-system-x86_64 \
+  -m 512M \
+  -machine type=pc,accel=kvm \
+  -drive format=raw,file=$(ls -1 dist/airgap-*.raw)
 ```
 
 ## Notes ##

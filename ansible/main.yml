@@ -1,0 +1,17 @@
+---
+- hosts: all
+  gather_facts: yes
+  roles:
+    - common
+    - kernel
+    - tools/entropy
+    - tools/hsm
+    - tools/cryptocurrency
+    - tools/rfid
+    - tools/cryptography
+    - tools/backup
+    - tools/forensics
+    - tools/password-recovery
+    - tools/password-management
+    - tools/utilities
+    - cleanup

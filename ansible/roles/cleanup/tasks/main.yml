@@ -1,0 +1,20 @@
+---
+
+- name: Disable services
+  action: systemd name={{item}} enabled=no masked=yes
+  with_items:
+    - sshd
+
+- name: Trim Filesystem
+  shell: fstrim -av
+
+- name: Cleanup Cruft files
+  action: file state=absent path={{item}}
+  with_items:
+    - "/var/cache/apt/"
+    - "/var/cache/debconf/"
+    - "/var/lib/mysql/"
+    - "/var/lib/apt/"
+    - "/var/log/"
+    - "/usr/share/doc/"
+    - "/usr/share/icons/"

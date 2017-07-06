@@ -1,0 +1,34 @@
+---
+- name: install packages
+  action: apt pkg={{item}} state=installed
+  with_items:
+    - libftdi-dev
+    - libhidapi-libusb0
+    - libusb-1.0-0
+    - libusb-1.0-0-dev
+    - scdaemon
+    - libudev-dev
+    - libhidapi-dev
+    - yubikey-personalization
+    - yubico-piv-tool
+    - yhsm-tools
+    - ykneomgr
+    - u2f-host
+    - python-trezor
+    - libccid
+    - libchipcard-tools
+    - libchipcard-data
+    - libpcsclite1
+    - pcsc-tools
+    - pcscd
+    - python-pyscard
+
+- git:
+    repo: 'https://github.com/LedgerHQ/btchip-c-api.git'
+    dest: /tmp/btchip-c-api
+    version: 1d1d85b4e98316d33f001f58b4b65730a16b2426
+- shell: |
+    cd /tmp/btchip-c-api
+    make -f Makefile.hidapi
+    cp bin/* /usr/local/bin/
+- file: state=absent path=/tmp/btchip-c-api

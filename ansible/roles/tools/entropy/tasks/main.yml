@@ -1,0 +1,27 @@
+---
+- name: install packages
+  action: apt pkg={{item}} state=installed
+  with_items:
+    - haveged
+    - libftdi-dev
+    - libusb-dev
+    - rng-tools5
+
+- systemd: name=haveged enabled=yes masked=no
+
+- git:
+    repo: 'https://github.com/waywardgeek/infnoise.git'
+    dest: /tmp/infnoise
+    version: 3e406cfbb23e2fa74102d197cd44daee1e68e67a
+- make:
+    chdir: /tmp/infnoise/software
+- copy:
+    src: /tmp/infnoise/software/infnoise
+    dest: /usr/local/bin/infnoise
+    remote_src: yes
+    owner: root
+    group: root
+    mode: 0644
+- file:
+    state: absent
+    path: /tmp/infnoise

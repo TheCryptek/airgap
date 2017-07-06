@@ -47,7 +47,14 @@
   "provisioners": [
     {
       "type": "shell",
-      "script": "packer/setup.sh"
+      "inline": [
+        "apt install -y python",
+        "mount -t tmpfs -o size=8G tmpfs /tmp/"
+      ]
+    },
+    {
+      "type": "ansible",
+      "playbook_file": "ansible/main.yml"
     },
     {
       "type": "file",
