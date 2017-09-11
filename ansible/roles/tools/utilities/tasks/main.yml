@@ -20,3 +20,4 @@
     - lvm2
     - glances
     - htop
+    - tmux
