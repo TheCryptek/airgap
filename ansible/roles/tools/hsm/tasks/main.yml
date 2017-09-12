@@ -22,13 +22,41 @@
     - pcsc-tools
     - pcscd
     - python-pyscard
+    - python-dev
+
+- shell: gpg --recv-key E07DBBB3A8FFA884
+- file: path=/root/.gnupg/gpg.conf state=touch
+- lineinfile:
+    dest: /root/.gnupg/gpg.conf
+    state: present
+    regexp: 'E07DBBB3A8FFA884'
+    line: 'trusted-key E07DBBB3A8FFA884'
+
+- shell: gpg --recv-key 8E47A1EC35A1551D
+- file: path=/root/.gnupg/gpg.conf state=touch
+- lineinfile:
+    dest: /root/.gnupg/gpg.conf
+    state: present
+    regexp: '8E47A1EC35A1551D'
+    line: 'trusted-key 8E47A1EC35A1551D'
 
 - git:
-    repo: 'https://github.com/LedgerHQ/btchip-c-api.git'
+    repo: 'https://github.com/lrvick/python-keepkey.git'
+    dest: /tmp/python-keepkey
+    version: c9ec837769249708975b6f91adee21b8817ab879
+- shell: |
+    cd /tmp/python-keepkey
+    git verify-commit c9ec837769249708975b6f91adee21b8817ab879
+    python2.7 setup.py install
+- file: state=absent path=/tmp/python-keepkey
+
+- git:
+    repo: 'https://github.com/lrvick/btchip-c-api.git'
     dest: /tmp/btchip-c-api
-    version: 1d1d85b4e98316d33f001f58b4b65730a16b2426
+    version: 95930ea981b840a505f26d8ddedd4697e2da58dd
 - shell: |
     cd /tmp/btchip-c-api
+    git verify-commit 95930ea981b840a505f26d8ddedd4697e2da58dd
     make -f Makefile.hidapi
     cp bin/* /usr/local/bin/
 - file: state=absent path=/tmp/btchip-c-api

@@ -22,6 +22,7 @@ internet.
 ### Hardware Security Modules
 - [btchip]: Utilities to interact with Ledger hardware wallets
 - [trezorctl]: Utilities to interact with Trezor hardware wallet
+- [keepkeyctl]: Utilities to interact with Keepkey hardware wallets
 - [yubico-piv-tool]: Interact with PIV application on Yubikey
 - [yubikey-hsm]: Manage YubiHSM Hardware Security Modules for servers.
 - [yhsm-tools]: Various utilities for use of YubiHSM.
@@ -339,6 +340,13 @@ sudo mifare-classic-read-ndef -y -o - \
 ```
 gpg -d mnemonic.asc
 trezorctl recovery_device -w 24 -t matrix
+```
+
+##### Keepkey #####
+
+```
+gpg -d mnemonic.asc
+keepkeyctl recovery_device -w 24
 ```
 
 ##### Ledger #####
