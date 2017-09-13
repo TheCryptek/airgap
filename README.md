@@ -107,13 +107,6 @@ internet.
 - [pcsc-tools]: Some tools to use with smart cards and PC/SC
 - [rfdump]: Tool to decode RFID tag data
 
-### Forensics / Reverse Engineering
-- [binwalk]: Examine and extract files from binaries
-- [mac-robber]: Collects data from allocated files in a mounted file system
-- [rkhunter]: Rootkit, backdoor, sniffer and exploit scanner
-- [chkrootkit]: Rootkit detector
-- [unhide]: Find processes and TCP/UDP ports hidden by rootkits
-
 ### Utilities
 - [vim]: Vi IMproved - enhanced vi editor
 - [emacs]: GNU Emacs editor (metapackage)
