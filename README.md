@@ -102,9 +102,7 @@ internet.
 - [nfctool]: Manage NFC devices and read/write tags via neard.
 - [neard]: Near Field Communication (NFC) management daemon
 - [ndeftool]: Create/Manipulate NDEF formatted packets
-- [cardpeek]: Tool to read the contents of ISO7816 smartcards
 - [libchipcard-tools]: Tools for accessing chipcards
-- [pcsc-tools]: Some tools to use with smart cards and PC/SC
 - [rfdump]: Tool to decode RFID tag data
 
 ### Utilities
@@ -162,7 +160,6 @@ internet.
 [neard]: https://01.org/linux-nfc
 [cardpeek]: http://pannetrat.com/Cardpeek/
 [libchipcard-tools]: https://www.aquamaniac.de/sites/libchipcard/
-[pcsc-tools]: http://ludovic.rousseau.free.fr/softwares/pcsc-tools/
 [rfdump]: http://www.rfdump.org/
 [htop]: http://hisham.hm/htop/
 [keyringer]: https://keyringer.pw/

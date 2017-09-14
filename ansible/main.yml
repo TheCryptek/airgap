@@ -10,7 +10,6 @@
     - tools/rfid
     - tools/cryptography
     - tools/backup
-    - tools/password-recovery
     - tools/password-management
     - tools/utilities
     - cleanup

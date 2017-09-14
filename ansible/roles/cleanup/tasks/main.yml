@@ -8,6 +8,44 @@
 - name: Trim Filesystem
   shell: fstrim -av
 
+- name: Remove build dependencies
+  action: apt pkg={{item}} state=removed
+  with_items:
+    - git
+    - build-essential
+    - autoconf
+    - automake
+    - pkg-config
+    - python-setuptools
+    - gcc
+    - gcc-7
+    - libtool
+    - g++
+    - g++-7
+    - cpp
+    - cpp-7
+    - libgl1-mesa-dri
+    - libllvm5.0
+    - gnome-icon-theme
+    - adwaita-icon-theme
+    - libgtk-3-common
+    - libgtk2.0-common
+    - python-gt4
+    - libqtgui4
+    - libc6-dbg
+    - python-matplotlib-data
+    - "*-dev"
+    - "x11-*"
+    # I would prefer to remove python2.7 and leave 3 but some apps just don't
+    # let us have nice things.
+    - python3
+    - python3.6
+    - python3.6-minimal
+    - python3.5
+    - python3.5-minimal
+    - libpython3.5-stdlib
+    - libpython3.6-stdlib
+
 - name: Cleanup Cruft files
   action: file state=absent path={{item}}
   with_items:
@@ -18,3 +56,5 @@
     - "/var/log/"
     - "/usr/share/doc/"
     - "/usr/share/icons/"
+
+

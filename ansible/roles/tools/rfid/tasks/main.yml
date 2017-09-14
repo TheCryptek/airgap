@@ -16,14 +16,11 @@
     - libfreefare-dev
     - neard
     - neard-tools
-    - cardpeek
-    - cardpeek-data
     - rfdump
     - libccid
     - libchipcard-tools
     - libchipcard-data
     - libpcsclite1
-    - pcsc-tools
     - pcscd
     - python-pyscard
 
@@ -57,7 +54,7 @@
     version: c1d0f5f283f65b5671e9482a011e1118495129c1
 - shell: |
     cd /tmp/nfcpy
-    python3 setup.py install
+    python setup.py install
 - file: state=absent path=/tmp/nfcpy
 
 - git:
@@ -66,7 +63,7 @@
     version: 606a6d83d972ba7c26012647ea3d17db1f503811
 - shell: |
     cd /tmp/ndeflib
-    python3 setup.py install
+    python setup.py install
 - file: state=absent path=/tmp/ndeflib
 
 - git:
@@ -75,5 +72,5 @@
     version: 20851ced32458f0d9e416dc35c63d77729a773c4
 - shell: |
     cd /tmp/ndeftool
-    python3 setup.py install
+    python setup.py install
 - file: state=absent path=/tmp/ndeftool

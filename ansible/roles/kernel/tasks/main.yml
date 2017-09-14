@@ -13,10 +13,10 @@
     state: latest
     default_release: xenon
 
-- apt:
-    name: linux-headers-4.8.17-galliumos
-    state: latest
-    default_release: xenon
+#- apt:
+#    name: linux-headers-4.8.17-galliumos
+#    state: latest
+#    default_release: xenon
 
 - apt:
     name: linux-modules-4.8.17-galliumos

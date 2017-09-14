@@ -19,7 +19,6 @@
     - libchipcard-tools
     - libchipcard-data
     - libpcsclite1
-    - pcsc-tools
     - pcscd
     - python-pyscard
     - python-dev
