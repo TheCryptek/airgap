@@ -309,18 +309,46 @@ unmount /mnt/backup
 
 ##### Option 2: NFC Tag #####
 
-Write (Assuming a common Mifare Classic tag):
+###### Convert GPG to NDEF
+
 ```
-ndeftool text "$(cat mnemonic.asc)" > mnemonic.ndef
-sudo mifare-classic-write-ndef -y -i mnemonic.ndef
+ndeftool text "'$(cat mnemonic.asc)'" save mnemonic.ndef
 ```
 
-Verify:
+###### Write NDEF
+
+Mifare Classic tag:
 ```
-sudo mifare-classic-read-ndef -y -o - \
-  | ndeftool --silent load - print \
-  | sed -e 's/^\([^-]\+\)-/-/g' \
-  | gpg -d
+mifare-classic-write-ndef -y -i mnemonic.ndef
+```
+
+Forum 2 tag:
+```
+tagtool load mnemonic.ndef
+```
+
+###### Read NDEF
+
+Mifare Classic tag:
+```
+mifare-classic-read-ndef -y -o mnemonic.ndef
+```
+
+Forum 2 tag:
+```
+tagtool dump -o mnemonic.ndef
+```
+
+###### Convert NDEF to GPG
+
+```
+ndeftool load mnemonic.ndef print | sed 's/^[^-]\+\-/-/g' > mnemonic.asc
+```
+
+###### Decrypt GPG
+
+```
+gpg -d mnemonic.asc
 ```
 
 #### Initialize Hardware Wallet ####
@@ -328,14 +356,12 @@ sudo mifare-classic-read-ndef -y -o - \
 ##### Trezor #####
 
 ```
-gpg -d mnemonic.asc
 trezorctl recovery_device -w 24 -t matrix
 ```
 
 ##### Keepkey #####
 
 ```
-gpg -d mnemonic.asc
 keepkeyctl recovery_device -w 24
 ```
 
