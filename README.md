@@ -36,7 +36,7 @@ internet.
 - [electrum]: Utilities for popular bitcoin wallet format
 
 ### Entropy
-- [haveged]: Dameon that acts as a software random number generator
+- [haveged]: Daemon that acts as a software random number generator
 - [rng-tools]: Daemon that supports many different hardware TRNG devices
 - [infnoise]: Fetch entropy from the Infinite Noise TRNG
 
@@ -69,7 +69,7 @@ internet.
 - [pass]: Simple text file based password manager based on GPG and Git
 - [cpm]: Curses based password manager using PGP
 - [kpcli]: Interact with KeePassX password manager databases
-- [pwman3]: Console password managment application
+- [pwman3]: Console password management application
 - [passwordmaker-cli]: Creates unique, secure passwords - CLI version
 - [apg]: Automated Password Generator - Standalone version
 - [libpwqulity-tools]: Tools for password quality checking and generation
@@ -117,7 +117,7 @@ internet.
 - [htop]: Interactive processes viewer/manager
 - [strace]: A system call tracer
 - [gdb]: The GNU Debugger
-- [guncat]: Catenates files while decrypting PGP-encrypted sections
+- [guncat]: Concatenates files while decrypting PGP-encrypted sections
 - [zfsnap]: Automatic snapshot creation and removal for ZFS
 - [zfs-fuse]: ZFS on FUSE
 - [usbutils]: Examine attached USB devices
@@ -216,6 +216,7 @@ internet.
 [scrypt]: http://www.tarsnap.com/scrypt.html
 [binwalk]: https://github.com/devttys0/binwalk
 [trezorctl]: https://github.com/trezor/python-trezor
+[keepkeyctl]: https://github.com/keepkey/python-keepkey
 [ssss]: http://point-at-infinity.org/ssss/
 [btchip]: https://github.com/LedgerHQ/btchip-c-api
 [libbitcoin-explorr]: https://github.com/libbitcoin/libbitcoin-explorer/wiki
@@ -224,8 +225,8 @@ internet.
 
 Download:
 ```
-wget https://github.com/lrvick/airgap/releases/download/v0.0.1/airgap-201706210145.raw.gz
-wget https://github.com/lrvick/airgap/releases/download/v0.0.1/airgap-201706210145.raw.gz.sig
+wget https://github.com/lrvick/airgap/releases/download/v0.0.2/airgap-201709130827.raw.gz
+wget https://github.com/lrvick/airgap/releases/download/v0.0.2/airgap-201709130827.raw.gz.sig
 ```
 
 Verify
@@ -239,7 +240,7 @@ Create bootable USB drive:
 gunzip airgap-201706210145.raw.gz | pv | sudo dd of=/dev/sda
 ```
 
-Note: The above assumes /dev/sda is a flash media device of 8GB or larger.
+Note: The above assumes `/dev/sda` is a flash media device of 8GB or larger.
 
 ## Examples ##
 
@@ -270,7 +271,7 @@ bx seed -b 256 | bx mnemonic-new | gpg -ac > mnemonic.asc
 
 You will need to copy your GPG public keys to a flash drive on another system.
 
-Assuming the drive is is /dev/sda you could do:
+Assuming the drive is is `/dev/sda` you could do:
 
 ```
 mount /dev/sda1 /mnt/
