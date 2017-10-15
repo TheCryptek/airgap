@@ -55,7 +55,7 @@
 - shell: |
     cd /tmp/nfcpy
     python setup.py install
-    cp examples/cli.py /usr/local/lib/python2.7/
+    cp examples/cli.py /usr/local/lib/python2.7/dist-packages/
     cp examples/tagtool.py /usr/local/bin/tagtool
     chmod +x /usr/local/bin/tagtool
 - file: state=absent path=/tmp/nfcpy
