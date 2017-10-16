@@ -5,6 +5,7 @@
     - gnupg
     - gnupg2
     - dirmngr
+    - pinentry-tty
     - scrypt
     - ssdeep
     - hash-slinger
