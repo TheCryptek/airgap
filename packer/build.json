@@ -4,8 +4,8 @@
     "memory": "10G",
     "cpus": "2",
     "headless": "true",
-    "iso_url": "http://mirrors.ocf.berkeley.edu/debian-cd/9.2.0/amd64/iso-cd/debian-9.2.0-amd64-netinst.iso",
-    "iso_checksum": "bfe87c28bc842956cb31cd06737e821cdb67efcd043f64384c3688634bf6914a",
+    "iso_url": "https://cdimage.debian.org/debian-cd/9.2.1/amd64/iso-cd/debian-9.2.1-amd64-netinst.iso",
+    "iso_checksum": "ec78bc48b48d676775b60eda41528ec33c151c2ce7414a12b13d9b73d34de544",
     "version": "{{ env `VERSION`}}"
   },
   "builders": [

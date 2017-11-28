@@ -237,7 +237,7 @@ gpg --verify airgap-201706210145.raw.gz.sig
 
 Create bootable USB drive:
 ```
-gunzip airgap-201706210145.raw.gz | pv | sudo dd of=/dev/sda
+gunzip airgap-201706210145.raw.gz | pv | sudo dd bs=1M count=128 of=/dev/sda conv=fdatasync
 ```
 
 Note: The above assumes `/dev/sda` is a flash media device of 8GB or larger.
