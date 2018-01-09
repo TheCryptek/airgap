@@ -21,7 +21,7 @@
     remote_src: yes
     owner: root
     group: root
-    mode: 0644
+    mode: a+x
 - file:
     state: absent
     path: /tmp/infnoise

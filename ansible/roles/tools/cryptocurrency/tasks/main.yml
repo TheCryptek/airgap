@@ -8,11 +8,9 @@
     - libboost-all-dev
     - electrum
     - python-crypto
-    - python3-crypto
     - python-pycryptopp
-    - python3-dev
     - python-dev
-    - python3-flufl.password
+    - python-flufl.password
     - python-mnemonic
     - python-electrum
 
@@ -97,7 +95,7 @@
 - shell: |
     cd /tmp/bip32utils
     git verify-commit dd9c541767a2a8ff60c7868c9f4b03277fabb8ba
-    python3 setup.py install
+    python setup.py install
 - file: state=absent path=/tmp/bib32utils
 
 - git:
@@ -107,7 +105,7 @@
 - shell: |
     cd /tmp/python-mnemonic
     git verify-commit dd9c541767a2a8ff60c7868c9f4b03277fabb8ba
-    python3 setup.py install
+    python setup.py install
 - file: state=absent path=/tmp/python-mnemonic
 
 - git:
@@ -116,7 +114,7 @@
     version: 39a5f47f21f5f31c68c147dc173d9b2751c3213a
 - shell: |
     cd /tmp/pycoin
-    python3 setup.py install
+    python setup.py install
 - file: state=absent path=/tmp/pycoin
 
 - git:
@@ -125,5 +123,5 @@
     version: 2e0f288809bd68a46f881865b0a60f9c54c4751f
 - shell: |
     cd /tmp/pycryptodome
-    python3 setup.py install
+    python setup.py install
 - file: state=absent path=/tmp/pycryptodome

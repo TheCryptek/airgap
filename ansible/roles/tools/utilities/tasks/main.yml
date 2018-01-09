@@ -12,11 +12,12 @@
     - p7zip
     - strace
     - gdb
-    - vim
     - nano
-    - emacs
+    - vim-nox
+    - emacs-nox
     - parted
     - hwinfo
     - lvm2
     - glances
     - htop
+    - tmux

@@ -22,6 +22,7 @@ internet.
 ### Hardware Security Modules
 - [btchip]: Utilities to interact with Ledger hardware wallets
 - [trezorctl]: Utilities to interact with Trezor hardware wallet
+- [keepkeyctl]: Utilities to interact with Keepkey hardware wallets
 - [yubico-piv-tool]: Interact with PIV application on Yubikey
 - [yubikey-hsm]: Manage YubiHSM Hardware Security Modules for servers.
 - [yhsm-tools]: Various utilities for use of YubiHSM.
@@ -35,7 +36,7 @@ internet.
 - [electrum]: Utilities for popular bitcoin wallet format
 
 ### Entropy
-- [haveged]: Dameon that acts as a software random number generator
+- [haveged]: Daemon that acts as a software random number generator
 - [rng-tools]: Daemon that supports many different hardware TRNG devices
 - [infnoise]: Fetch entropy from the Infinite Noise TRNG
 
@@ -68,7 +69,7 @@ internet.
 - [pass]: Simple text file based password manager based on GPG and Git
 - [cpm]: Curses based password manager using PGP
 - [kpcli]: Interact with KeePassX password manager databases
-- [pwman3]: Console password managment application
+- [pwman3]: Console password management application
 - [passwordmaker-cli]: Creates unique, secure passwords - CLI version
 - [apg]: Automated Password Generator - Standalone version
 - [libpwqulity-tools]: Tools for password quality checking and generation
@@ -101,17 +102,8 @@ internet.
 - [nfctool]: Manage NFC devices and read/write tags via neard.
 - [neard]: Near Field Communication (NFC) management daemon
 - [ndeftool]: Create/Manipulate NDEF formatted packets
-- [cardpeek]: Tool to read the contents of ISO7816 smartcards
 - [libchipcard-tools]: Tools for accessing chipcards
-- [pcsc-tools]: Some tools to use with smart cards and PC/SC
 - [rfdump]: Tool to decode RFID tag data
-
-### Forensics / Reverse Engineering
-- [binwalk]: Examine and extract files from binaries
-- [mac-robber]: Collects data from allocated files in a mounted file system
-- [rkhunter]: Rootkit, backdoor, sniffer and exploit scanner
-- [chkrootkit]: Rootkit detector
-- [unhide]: Find processes and TCP/UDP ports hidden by rootkits
 
 ### Utilities
 - [vim]: Vi IMproved - enhanced vi editor
@@ -125,7 +117,7 @@ internet.
 - [htop]: Interactive processes viewer/manager
 - [strace]: A system call tracer
 - [gdb]: The GNU Debugger
-- [guncat]: Catenates files while decrypting PGP-encrypted sections
+- [guncat]: Concatenates files while decrypting PGP-encrypted sections
 - [zfsnap]: Automatic snapshot creation and removal for ZFS
 - [zfs-fuse]: ZFS on FUSE
 - [usbutils]: Examine attached USB devices
@@ -168,7 +160,6 @@ internet.
 [neard]: https://01.org/linux-nfc
 [cardpeek]: http://pannetrat.com/Cardpeek/
 [libchipcard-tools]: https://www.aquamaniac.de/sites/libchipcard/
-[pcsc-tools]: http://ludovic.rousseau.free.fr/softwares/pcsc-tools/
 [rfdump]: http://www.rfdump.org/
 [htop]: http://hisham.hm/htop/
 [keyringer]: https://keyringer.pw/
@@ -225,6 +216,7 @@ internet.
 [scrypt]: http://www.tarsnap.com/scrypt.html
 [binwalk]: https://github.com/devttys0/binwalk
 [trezorctl]: https://github.com/trezor/python-trezor
+[keepkeyctl]: https://github.com/keepkey/python-keepkey
 [ssss]: http://point-at-infinity.org/ssss/
 [btchip]: https://github.com/LedgerHQ/btchip-c-api
 [libbitcoin-explorr]: https://github.com/libbitcoin/libbitcoin-explorer/wiki
@@ -233,8 +225,8 @@ internet.
 
 Download:
 ```
-wget https://github.com/lrvick/airgap/releases/download/v0.0.1/airgap-201706210145.raw.gz
-wget https://github.com/lrvick/airgap/releases/download/v0.0.1/airgap-201706210145.raw.gz.sig
+wget https://github.com/lrvick/airgap/releases/download/v0.0.2/airgap-201709130827.raw.gz
+wget https://github.com/lrvick/airgap/releases/download/v0.0.2/airgap-201709130827.raw.gz.sig
 ```
 
 Verify
@@ -245,10 +237,10 @@ gpg --verify airgap-201706210145.raw.gz.sig
 
 Create bootable USB drive:
 ```
-gunzip airgap-201706210145.raw.gz | pv | sudo dd of=/dev/sda
+gunzip airgap-201706210145.raw.gz | pv | sudo dd bs=1M count=128 of=/dev/sda conv=fdatasync
 ```
 
-Note: The above assumes /dev/sda is a flash media device of 8GB or larger.
+Note: The above assumes `/dev/sda` is a flash media device of 8GB or larger.
 
 ## Examples ##
 
@@ -279,7 +271,7 @@ bx seed -b 256 | bx mnemonic-new | gpg -ac > mnemonic.asc
 
 You will need to copy your GPG public keys to a flash drive on another system.
 
-Assuming the drive is is /dev/sda you could do:
+Assuming the drive is is `/dev/sda` you could do:
 
 ```
 mount /dev/sda1 /mnt/
@@ -318,18 +310,46 @@ unmount /mnt/backup
 
 ##### Option 2: NFC Tag #####
 
-Write (Assuming a common Mifare Classic tag):
+###### Convert GPG to NDEF
+
 ```
-ndeftool text "$(cat mnemonic.asc)" > mnemonic.ndef
-sudo mifare-classic-write-ndef -y -i mnemonic.ndef
+ndeftool text "'$(cat mnemonic.asc)'" save mnemonic.ndef
 ```
 
-Verify:
+###### Write NDEF
+
+Mifare Classic tag:
 ```
-sudo mifare-classic-read-ndef -y -o - \
-  | ndeftool --silent load - print \
-  | sed -e 's/^\([^-]\+\)-/-/g' \
-  | gpg -d
+mifare-classic-write-ndef -y -i mnemonic.ndef
+```
+
+Forum 2 tag:
+```
+tagtool load mnemonic.ndef
+```
+
+###### Read NDEF
+
+Mifare Classic tag:
+```
+mifare-classic-read-ndef -y -o mnemonic.ndef
+```
+
+Forum 2 tag:
+```
+tagtool dump -o mnemonic.ndef
+```
+
+###### Convert NDEF to GPG
+
+```
+ndeftool load mnemonic.ndef print | sed 's/^[^-]\+\-/-/g' > mnemonic.asc
+```
+
+###### Decrypt GPG
+
+```
+gpg -d mnemonic.asc
 ```
 
 #### Initialize Hardware Wallet ####
@@ -337,8 +357,13 @@ sudo mifare-classic-read-ndef -y -o - \
 ##### Trezor #####
 
 ```
-gpg -d mnemonic.asc
 trezorctl recovery_device -w 24 -t matrix
+```
+
+##### Keepkey #####
+
+```
+keepkeyctl recovery_device -w 24
 ```
 
 ##### Ledger #####

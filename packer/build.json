@@ -4,8 +4,8 @@
     "memory": "10G",
     "cpus": "2",
     "headless": "true",
-    "iso_url": "https://cdimage.debian.org/mirror/cdimage/stretch_di_rc4/multi-arch/iso-cd/debian-stretch-DI-rc4-amd64-i386-netinst.iso",
-    "iso_checksum": "009198d66721681a3c0a42476c11dcfc63df4171f5e9a58aabea608f5a475598",
+    "iso_url": "https://cdimage.debian.org/debian-cd/9.2.1/amd64/iso-cd/debian-9.2.1-amd64-netinst.iso",
+    "iso_checksum": "ec78bc48b48d676775b60eda41528ec33c151c2ce7414a12b13d9b73d34de544",
     "version": "{{ env `VERSION`}}"
   },
   "builders": [

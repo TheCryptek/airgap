@@ -17,7 +17,6 @@
     - automake
     - pkg-config
     - python-setuptools
-    - python3-setuptools
     - libconfig-dev
 
 - user:

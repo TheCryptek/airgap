@@ -9,6 +9,7 @@ export VERSION := $(shell date -u +%Y%m%d%H%M)
 clean:
 	rm -rf dist
 	rm -rf .packer/build
+	rm -rf ansible/main.retry
 
 all: clean
 	packer build --parallel=false packer/build.json
