@@ -121,11 +121,14 @@ expect <<-EOD > /dev/null
 	spawn gpg --export-secret-keys --armor -o $GNUPGHOME/master.asc
 	expect "Passphrase:"
 	send "$passphrase\r"
+	expect "eof"
+	spawn gpg --export --armor -o $GNUPGHOME/public.asc
 	expect eof
 EOD
 
 # Output keychain to stdout
 cat $GNUPGHOME/master.asc
+cat $GNUPGHOME/public.asc
 
 # Cleanup
 gpgconf --kill gpg-agent
