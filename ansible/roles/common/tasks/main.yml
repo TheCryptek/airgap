@@ -87,6 +87,22 @@
       mode: "0755"
   - systemd: name=getty@tty1 enabled=yes masked=no
 
+- name: Auto Mount SD Cards
+  block:
+    - template:
+        src: udev-sdcard-automount.rules
+        dest: /etc/udev/rules.d/70-udev-sdcard-automount.rules
+    - file:
+        path: /etc/systemd/system/systemd-udevd.service.d/
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+    - name: Allow systemd-udevd to mount to the system filesystem namespace
+      template:
+        src: shared-mount.conf
+        dest: /etc/systemd/system/systemd-udevd.service.d/shared-mount.conf
+
 - name: Immutable rootfs with memory overlay
   block:
     - blockinfile:
