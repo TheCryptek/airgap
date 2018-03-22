@@ -18,53 +18,86 @@
     - pkg-config
     - python-setuptools
     - libconfig-dev
+    - fsprotect
+    - aufs-dkms
+    - aufs-tools
 
-- user:
-    name: airgap
-    shell: /bin/bash
-    groups: sudo
-    createhome: true
-    append: yes
+- name: Install latest linux kernel and headers
+  action: apt pkg={{item}} state=latest update_cache=yes
+  with_items:
+    - linux-image-amd64
+    - linux-headers-amd64
 
-- shell: passwd --delete airgap
+- name: Create airgap user
+  block:
+  - user:
+      name: airgap
+      shell: /bin/bash
+      groups: sudo
+      createhome: true
+      append: yes
+  - file:
+      path: /home/airgap/
+      state: directory
+      recurse: yes
+      owner: airgap
+      group: airgap
+      mode: "0755"
+  - file:
+      path: /home/airgap/.local/bin
+      state: directory
+      owner: airgap
+      group: airgap
+      mode: "0755"
+  - shell: passwd --delete airgap
+  - lineinfile:
+      dest: /etc/sudoers
+      state: present
+      line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+  - file:
+      path: /home/airgap/.bash_profile
+      state: touch
+      owner: airgap
+      group: airgap
+      mode: "0755"
+  - blockinfile:
+      dest: /home/airgap/.bash_profile
+      state: present
+      block: |
+        clear
+        export PATH="/home/airgap/.local/bin:$PATH"
+  - file:
+      path: /home/airgap/.hushlogin
+      state: touch
+      owner: airgap
+      group: airgap
+      mode: "0755"
 
-- lineinfile:
-    dest: /etc/sudoers
-    state: present
-    regexp: '^%sudo ALL\=\(ALL\) NOPASSWD: ALL'
-    line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+- name: Automatic Login
+  block:
+  - file:
+      path: /etc/systemd/system/getty@tty1.service.d
+      state: directory
+      owner: root
+      group: root
+      mode: "0755"
+  - template:
+      src: autologin.conf
+      dest: /etc/systemd/system/getty@tty1.service.d/autologin.conf
+      mode: "0755"
+  - systemd: name=getty@tty1 enabled=yes masked=no
 
-
-- file:
-    path: /home/airgap/.bash_profile
-    state: touch
-    owner: airgap
-    group: airgap
-    mode: "0755"
-
-- lineinfile:
-    dest: /home/airgap/.bash_profile
-    state: present
-    regexp: '^clear$'
-    line: 'clear'
-
-- file:
-    path: /home/airgap/.hushlogin
-    state: touch
-    owner: airgap
-    group: airgap
-    mode: "0755"
-
-- file:
-    path: /etc/systemd/system/getty@tty1.service.d
-    state: directory
-    owner: root
-    group: root
-    mode: "0755"
-
-- template:
-    src: autologin.conf
-    dest: /etc/systemd/system/getty@tty1.service.d/autologin.conf
-    mode: "0755"
-
-- systemd: name=getty@tty1 enabled=yes masked=no
+- name: Immutable rootfs with memory overlay
+  block:
+    - blockinfile:
+        dest: /etc/default/grub
+        state: present
+        block: |
+          GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX fsprotect=1G quiet splash loglevel=0 console=ttyS0,115200 earlyprintk=ttyS0,115200 nofb"
+          GRUB_HIDDEN_TIMEOUT_QUIET=true
+          GRUB_HIDDEN_TIMEOUT=0
+          GRUB_TIMEOUT=0
+    - name: update-initramfs
+      command: /usr/sbin/update-initramfs -u
+    - name: update-grub
+      command: /usr/sbin/update-grub
