@@ -1,7 +1,7 @@
 {
   "variables": {
-    "disk_size": "8000",
-    "memory": "10G",
+    "disk_size": "7500",
+    "memory": "4G",
     "cpus": "2",
     "headless": "true",
     "iso_url": "https://cdimage.debian.org/debian-cd/9.2.1/amd64/iso-cd/debian-9.2.1-amd64-netinst.iso",
