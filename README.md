@@ -76,6 +76,6 @@ Note: The above assumes `/dev/sda` is a flash media device of 8GB or larger.
 
   Questions/Comments?
 
-  IRC: [lrvick@irc.freenode.net/6697]()
-  Matrix: [@lrvick:matrix.org]()
-  Email: [lance@lrvick.net](mailto://lance@lrvick.net)
+  - IRC: [lrvick@irc.freenode.net/6697]()
+  - Matrix: [@lrvick:matrix.org]()
+  - Email: [lance@lrvick.net](mailto://lance@lrvick.net)
