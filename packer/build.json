@@ -4,8 +4,8 @@
     "memory": "4G",
     "cpus": "2",
     "headless": "true",
-    "iso_url": "https://cdimage.debian.org/debian-cd/9.2.1/amd64/iso-cd/debian-9.2.1-amd64-netinst.iso",
-    "iso_checksum": "ec78bc48b48d676775b60eda41528ec33c151c2ce7414a12b13d9b73d34de544",
+    "iso_url": "https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-9.4.0-amd64-netinst.iso",
+    "iso_checksum": "124d270006703f2111224dec3bf7a9d01450168be41d4834f88fdd035552b044",
     "version": "{{ env `VERSION`}}"
   },
   "builders": [
