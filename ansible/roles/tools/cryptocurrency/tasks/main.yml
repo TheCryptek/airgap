@@ -12,7 +12,6 @@
     - python-dev
     - python-flufl.password
     - python-mnemonic
-    - python-electrum
 
 - shell: gpg --recv-key 91F3B339B9A02A3D
 - file: path=/root/.gnupg/gpg.conf state=touch
