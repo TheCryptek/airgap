@@ -103,6 +103,37 @@
         src: shared-mount.conf
         dest: /etc/systemd/system/systemd-udevd.service.d/shared-mount.conf
 
+- name: Enable DHCP if network device present
+  block:
+    - blockinfile:
+        dest: /etc/systemd/network/dhcp.network
+        state: present
+        create: yes
+        block: |
+          [Match]
+          Name=en*
+
+          [Network]
+          DHCP=ipv4
+
+- name: Enable passwordless ssh for dev or airgap-to-airgap uses
+  block:
+    - lineinfile:
+        dest: /etc/ssh/sshd_config
+        state: present
+        line: 'PermitEmptyPasswords yes'
+    - lineinfile:
+        dest: /etc/pam.d/sshd
+        state: absent
+        line: '@include common-auth'
+    - blockinfile:
+        dest: /etc/pam.d/sshd
+        state: present
+        block: |
+          auth [success=1 default=ignore] pam_unix.so nullok
+          auth requisite pam_deny.so
+          auth required pam_permit.so
+
 - name: Immutable rootfs with memory overlay
   block:
     - blockinfile:

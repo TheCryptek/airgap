@@ -44,17 +44,6 @@ from a random retail store in order to avoid supply chain attacks.
 make all
 ```
 
-## Test ##
-
-Boot image in qemu
-```
-gunzip dist/airgap-latest.raw.gz
-qemu-system-x86_64 \
-  -m 512M \
-  -machine type=pc,accel=kvm \
-  -drive format=raw,file=$(ls -1 dist/airgap-*.raw)
-```
-
 ## Install ##
 
 Create bootable USB drive:
@@ -67,6 +56,27 @@ Note: The above assumes `/dev/sda` is a flash media device of 8GB or larger.
 ## Examples ##
 
 * [Generate HD Cryptocurrency Wallet](docs/HD-Cryptocurrency-Wallet.md)
+
+## Development ##
+
+### Boot image in qemu
+
+```
+gunzip dist/airgap-latest.raw.gz
+qemu-system-x86_64 \
+  -m 512M \
+  -machine type=pc,accel=kvm \
+  -net nic -net user,hostfwd=tcp::2222-:22
+  -drive format=raw,file=$(ls -1 dist/airgap-*.raw)
+```
+
+### Run Ansible against running VM
+
+```
+ansible-playbook -k -b -u airgap -i "0.0.0.0:2222," ansible/main.yml
+```
+
+Note: Due to fsprotect being enabled, changes will not persist through reboots.
 
 ## Notes ##
 
