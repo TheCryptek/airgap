@@ -8,7 +8,7 @@
     state: present
 
 - name: Install APT packages
-  action: apt pkg={{item}} state=installed
+  action: apt pkg={{item}} state=latest update_cache=yes
   with_items:
     - sudo
     - git
@@ -23,7 +23,7 @@
     - aufs-tools
 
 - name: Install latest linux kernel and headers
-  action: apt pkg={{item}} state=latest update_cache=yes
+  action: apt pkg={{item}} state=latest
   with_items:
     - linux-image-amd64
     - linux-headers-amd64
@@ -141,9 +141,9 @@
         state: present
         block: |
           GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX fsprotect=1G quiet splash loglevel=0 console=ttyS0,115200 earlyprintk=ttyS0,115200 nofb"
-          GRUB_HIDDEN_TIMEOUT_QUIET=true
-          GRUB_HIDDEN_TIMEOUT=0
-          GRUB_TIMEOUT=0
+          #GRUB_HIDDEN_TIMEOUT_QUIET=true
+          #GRUB_HIDDEN_TIMEOUT=0
+          #GRUB_TIMEOUT=0
     - name: update-initramfs
       command: /usr/sbin/update-initramfs -u
     - name: update-grub
