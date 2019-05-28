@@ -59,6 +59,12 @@ Note: The above assumes `/dev/sda` is a flash media device of 8GB or larger.
 
 ## Development ##
 
+### Build Debugging
+
+```
+PACKER_LOG=1 ANSIBLE_ARGS="-vvvv" make all
+```
+
 ### Boot image in qemu
 
 ```
