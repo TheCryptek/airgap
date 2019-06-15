@@ -1,12 +1,13 @@
 {
   "variables": {
-    "disk_size": "8000",
+    "disk_size": "7500",
     "memory": "10G",
     "cpus": "2",
     "headless": "true",
-    "iso_url": "https://cdimage.debian.org/debian-cd/9.2.1/amd64/iso-cd/debian-9.2.1-amd64-netinst.iso",
-    "iso_checksum": "ec78bc48b48d676775b60eda41528ec33c151c2ce7414a12b13d9b73d34de544",
-    "version": "{{ env `VERSION`}}"
+    "iso_url": "https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-9.9.0-amd64-netinst.iso",
+    "iso_checksum": "d4a22c81c76a66558fb92e690ef70a5d67c685a08216701b15746586520f6e8e",
+    "version": "{{ env `VERSION`}}",
+    "ansible_args": "{{ env `ANSIBLE_ARGS`}}"
   },
   "builders": [
     {
@@ -54,7 +55,8 @@
     },
     {
       "type": "ansible",
-      "playbook_file": "ansible/main.yml"
+      "playbook_file": "ansible/main.yml",
+      "extra_arguments": "{{ user `ansible_args` }}"
     },
     {
       "type": "file",

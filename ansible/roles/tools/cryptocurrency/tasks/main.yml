@@ -12,7 +12,6 @@
     - python-dev
     - python-flufl.password
     - python-mnemonic
-    - python-electrum
 
 - shell: gpg --recv-key 91F3B339B9A02A3D
 - file: path=/root/.gnupg/gpg.conf state=touch
@@ -25,7 +24,7 @@
 - git:
     repo: 'https://github.com/zeromq/libzmq.git'
     dest: /tmp/libzmq
-    version: 2d83acceffdef71c62c936487db9478b5478a00c
+    version: 2cb1240db64ce1ea299e00474c646a2453a8435b
 - shell: |
     cd /tmp/libzmq
     ./autogen.sh
@@ -36,7 +35,7 @@
 - git:
     repo: 'https://github.com/libbitcoin/libbitcoin.git'
     dest: /tmp/libbitcoin
-    version: ddf19b34aac222a834177830de485a665b152a6a
+    version: 55f0c59421b43bb8c756431da53a28daf95dd0fa
 - shell: |
     cd /tmp/libbitcoin
     ./autogen.sh
@@ -47,7 +46,7 @@
 - git:
     repo: 'https://github.com/libbitcoin/libbitcoin-protocol.git'
     dest: /tmp/libbitcoin-protocol
-    version: 57ebd9c32233a76f83038b7655b4a4f8e862bac5
+    version: 40396466af885bc75f878e2518a227bc4288d7a1
 - shell: |
     cd /tmp/libbitcoin-protocol
     ./autogen.sh
@@ -58,7 +57,7 @@
 - git:
     repo: 'https://github.com/libbitcoin/libbitcoin-network.git'
     dest: /tmp/libbitcoin-network
-    version: 1e79325d063f4efbbdc1551b2a2cffcf0babb501
+    version: 4349e522c525c30d7f7a87f1288b66f475ee8d8c
 - shell: |
     cd /tmp/libbitcoin-network
     ./autogen.sh
@@ -69,7 +68,7 @@
 - git:
     repo: 'https://github.com/libbitcoin/libbitcoin-client.git'
     dest: /tmp/libbitcoin-client
-    version: de8a7b2232d29e28e47454392dfad9bca532735b
+    version: 780dfea2be845884dfd509464983f6ecbe593770
 - shell: |
     cd /tmp/libbitcoin-client
     ./autogen.sh
@@ -80,7 +79,7 @@
 - git:
     repo: 'https://github.com/libbitcoin/libbitcoin-explorer.git'
     dest: /tmp/libbitcoin-explorer
-    version: 231323a5886c2ebf9d33011b8b2c3d49a9af6d52
+    version: 8c886eb28eab38b977050cd3a466feb14ae0ee8f
 - shell: |
     cd /tmp/libbitcoin-explorer
     ./autogen.sh
@@ -89,19 +88,9 @@
 - file: state=absent path=/tmp/libbitcoin-explorer
 
 - git:
-    repo: 'https://github.com/prusnak/bip32utils.git'
-    dest: /tmp/bip32utils
-    version: dd9c541767a2a8ff60c7868c9f4b03277fabb8ba
-- shell: |
-    cd /tmp/bip32utils
-    git verify-commit dd9c541767a2a8ff60c7868c9f4b03277fabb8ba
-    python setup.py install
-- file: state=absent path=/tmp/bib32utils
-
-- git:
     repo: 'https://github.com/trezor/python-mnemonic.git'
     dest: /tmp/python-mnemonic
-    version: bd441b693271a07ee0ce51f89d3141457785b108
+    version: 063a33b517803c88d81e0ff0ccc9587b833d8280
 - shell: |
     cd /tmp/python-mnemonic
     git verify-commit dd9c541767a2a8ff60c7868c9f4b03277fabb8ba
@@ -111,7 +100,7 @@
 - git:
     repo: 'https://github.com/richardkiss/pycoin.git'
     dest: /tmp/pycoin
-    version: 39a5f47f21f5f31c68c147dc173d9b2751c3213a
+    version: 98b192a198d56d6754fda911e9d89afb894d7b33
 - shell: |
     cd /tmp/pycoin
     python setup.py install
@@ -120,7 +109,7 @@
 - git:
     repo: 'https://github.com/Legrandin/pycryptodome.git'
     dest: /tmp/pycryptodome
-    version: 2e0f288809bd68a46f881865b0a60f9c54c4751f
+    version: 9389dad20c81928e51151ddb984d5721a7cb09d2
 - shell: |
     cd /tmp/pycryptodome
     python setup.py install
